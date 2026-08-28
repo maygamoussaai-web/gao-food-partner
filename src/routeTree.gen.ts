@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ConditionsRouteImport } from './routes/conditions'
 import { Route as ConnexionRouteImport } from './routes/connexion'
+import { Route as InscriptionRouteImport } from './routes/inscription'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const ConnexionRoute = ConnexionRouteImport.update({
   path: '/connexion',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InscriptionRoute = InscriptionRouteImport.update({
+  id: '/inscription',
+  path: '/inscription',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/conditions': typeof ConditionsRoute
   '/connexion': typeof ConnexionRoute
+  '/inscription': typeof InscriptionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/conditions': typeof ConditionsRoute
   '/connexion': typeof ConnexionRoute
+  '/inscription': typeof InscriptionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/conditions': typeof ConditionsRoute
   '/connexion': typeof ConnexionRoute
+  '/inscription': typeof InscriptionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/conditions' | '/connexion'
+  fullPaths: '/' | '/conditions' | '/connexion' | '/inscription'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/conditions' | '/connexion'
-  id: '__root__' | '/' | '/conditions' | '/connexion'
+  to: '/' | '/conditions' | '/connexion' | '/inscription'
+  id: '__root__' | '/' | '/conditions' | '/connexion' | '/inscription'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ConditionsRoute: typeof ConditionsRoute
   ConnexionRoute: typeof ConnexionRoute
+  InscriptionRoute: typeof InscriptionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConnexionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/inscription': {
+      id: '/inscription'
+      path: '/inscription'
+      fullPath: '/inscription'
+      preLoaderRoute: typeof InscriptionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ConditionsRoute: ConditionsRoute,
   ConnexionRoute: ConnexionRoute,
+  InscriptionRoute: InscriptionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
