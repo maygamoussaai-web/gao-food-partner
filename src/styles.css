@@ -41,6 +41,7 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
   --shadow-card: var(--shadow-card);
 }
 
