@@ -1,11 +1,12 @@
 import { ArrowLeft } from "lucide-react";
 
+import { BottomNav, BOTTOM_NAV_SPACE } from "@/components/bottom-nav";
 import { ButtonLink, Card } from "@/components/ui-kit";
 import { Wordmark } from "@/components/wordmark";
 
 export function PlaceholderPage({ titre, texte }: { titre: string; texte: string }) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" style={{ paddingBottom: BOTTOM_NAV_SPACE }}>
       <header className="flex items-center justify-between border-b border-border px-5 py-4">
         <Wordmark className="text-sm" />
         <ButtonLink to="/tableau-de-bord" variant="ghost" size="sm">
@@ -18,6 +19,7 @@ export function PlaceholderPage({ titre, texte }: { titre: string; texte: string
           <p className="text-sm text-muted-foreground">{texte}</p>
         </Card>
       </main>
+      <BottomNav />
     </div>
   );
 }
