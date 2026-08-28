@@ -5,6 +5,7 @@ import { useState } from "react";
 import { AskiaBackground } from "@/components/askia-background";
 import { Button, ButtonLink } from "@/components/ui-kit";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Wordmark } from "@/components/wordmark";
 
 export const Route = createFileRoute("/")({
   head: () => ({
