@@ -326,12 +326,7 @@ function TableauDeBord() {
             <Section
               titre={`Mes boissons (${data.nombre_boissons ?? 0})`}
               action={
-                <ButtonLink
-                  to="/menu"
-                  search={{ tab: "boissons" }}
-                  variant="ghost"
-                  size="sm"
-                >
+                <ButtonLink to="/menu" hash="boissons" variant="ghost" size="sm">
                   Voir tout
                 </ButtonLink>
               }
