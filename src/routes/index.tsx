@@ -55,9 +55,7 @@ function Onboarding() {
       <AskiaBackground />
 
       <header className="flex items-center justify-between px-5 pt-5">
-        <span className="text-sm font-semibold tracking-wide text-foreground">
-          GAO<span className="text-primary"> FOOD</span>
-        </span>
+        <Wordmark className="text-sm text-foreground" />
         <ThemeToggle />
       </header>
 
