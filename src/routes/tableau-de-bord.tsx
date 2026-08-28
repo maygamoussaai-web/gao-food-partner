@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
+import { BottomNav, BOTTOM_NAV_SPACE } from "@/components/bottom-nav";
 import { PromotionDialog } from "@/components/promotion-dialog";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button, ButtonLink, Card } from "@/components/ui-kit";
@@ -188,7 +189,7 @@ function TableauDeBord() {
   const nonLues = data?.commandes_non_lues ?? 0;
 
   return (
-    <div className="min-h-screen bg-background pb-10">
+    <div className="min-h-screen bg-background" style={{ paddingBottom: BOTTOM_NAV_SPACE }}>
       <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-background/95 px-5 py-3 backdrop-blur">
         <Wordmark className="text-sm" />
         <div className="flex items-center gap-1">
@@ -350,6 +351,8 @@ function TableauDeBord() {
           onCreated={() => void home.refetch()}
         />
       )}
+
+      <BottomNav />
     </div>
   );
 }
