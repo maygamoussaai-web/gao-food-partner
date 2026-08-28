@@ -86,13 +86,12 @@ function Onboarding() {
         <div className="mt-10 space-y-3">
           {last ? (
             <>
-              <ButtonLink to="/conditions" size="lg" className="w-full">
-                Commencer
+              <ButtonLink to="/inscription" size="lg" className="w-full">
+                Créer mon compte
               </ButtonLink>
-              <p className="text-center text-xs text-muted-foreground">
-                L'inscription et la connexion seront activées dès la connexion à votre base
-                de données.
-              </p>
+              <ButtonLink to="/connexion" variant="outline" size="lg" className="w-full">
+                J'ai déjà un compte
+              </ButtonLink>
             </>
           ) : (
             <Button size="lg" className="w-full" onClick={() => setIndex(index + 1)}>
