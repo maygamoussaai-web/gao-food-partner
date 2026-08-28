@@ -569,6 +569,10 @@ export type Database = {
         Returns: number
       }
       hash_password: { Args: { plain: string }; Returns: string }
+      incrementer_solde: {
+        Args: { p_montant: number; p_restaurant_id: string }
+        Returns: undefined
+      }
       verify_password: {
         Args: { hashed: string; plain: string }
         Returns: boolean
