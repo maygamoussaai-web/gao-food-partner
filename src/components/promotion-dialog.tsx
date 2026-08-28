@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { X } from "lucide-react";
 
 import { Field, FormError, Input } from "@/components/form-field";
+import { MediaPicker } from "@/components/media-picker";
 import { Button } from "@/components/ui-kit";
 import { fileToBase64, homeApi, type ArticlePopulaire } from "@/lib/home-api";
 
@@ -90,14 +91,13 @@ export function PromotionDialog({
         </div>
 
         <form className="mt-4 space-y-4" onSubmit={soumettre}>
-          <Field label="Photo ou vidéo" hint="Visible sur votre vitrine, façon story.">
-            <input
-              type="file"
-              accept="image/*,video/*"
-              onChange={(e) => setFichier(e.target.files?.[0] ?? null)}
-              className="w-full rounded-lg border border-input bg-card px-3 py-2.5 text-sm text-foreground file:mr-3 file:rounded-md file:border-0 file:bg-secondary file:px-3 file:py-1.5 file:text-sm file:text-secondary-foreground"
-            />
-          </Field>
+          <MediaPicker
+            label="Photo ou vidéo"
+            accept="image/*,video/*"
+            value={fichier}
+            onChange={setFichier}
+            hint="Visible sur votre vitrine, façon story."
+          />
 
           <Field label="Description">
             <textarea
