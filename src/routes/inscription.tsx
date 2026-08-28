@@ -2,11 +2,13 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { Field, FormError, Input } from "@/components/form-field";
+import { MediaPicker } from "@/components/media-picker";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui-kit";
 import { Wordmark } from "@/components/wordmark";
 import { useAuth } from "@/hooks/use-auth";
 import { authApi } from "@/lib/auth-api";
+import { fileToBase64 } from "@/lib/home-api";
 
 export const Route = createFileRoute("/inscription")({
   ssr: false,
@@ -39,8 +41,8 @@ function Inscription() {
     confirmation: "",
     restaurant_nom: "",
     restaurant_quartier: "",
-    restaurant_logo_url: "",
   });
+  const [logo, setLogo] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -60,6 +62,12 @@ function Inscription() {
     }
     setBusy(true);
     try {
+      let logoPart: { restaurant_logo_base64?: string; restaurant_logo_content_type?: string } = {};
+      if (logo) {
+        const base64 = await fileToBase64(logo);
+        logoPart = { restaurant_logo_base64: base64, restaurant_logo_content_type: logo.type };
+      }
+
       const payload = await authApi.register({
         prenom: form.prenom.trim(),
         nom: form.nom.trim(),
@@ -67,9 +75,7 @@ function Inscription() {
         mot_de_passe: form.mot_de_passe,
         restaurant_nom: form.restaurant_nom.trim(),
         restaurant_quartier: form.restaurant_quartier.trim(),
-        ...(form.restaurant_logo_url.trim()
-          ? { restaurant_logo_url: form.restaurant_logo_url.trim() }
-          : {}),
+        ...logoPart,
       });
       setSession(payload);
       await navigate({ to: "/tableau-de-bord" });
@@ -154,14 +160,14 @@ function Inscription() {
             />
           </Field>
 
-          <Field label="Logo (URL)" hint="Facultatif — l'envoi d'image arrivera plus tard.">
-            <Input
-              type="url"
-              value={form.restaurant_logo_url}
-              onChange={set("restaurant_logo_url")}
-              placeholder="https://…"
-            />
-          </Field>
+          <MediaPicker
+            label="Logo (facultatif)"
+            accept="image/*"
+            value={logo}
+            onChange={setLogo}
+            rond
+            hint="Prenez une photo ou choisissez-la dans votre galerie."
+          />
 
           <Button type="submit" size="lg" className="w-full" disabled={busy}>
             {busy ? "Création…" : "Créer mon compte"}
