@@ -14,6 +14,7 @@ import { Route as ConditionsRouteImport } from './routes/conditions'
 import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as InscriptionRouteImport } from './routes/inscription'
 import { Route as MotDePasseOublieRouteImport } from './routes/mot-de-passe-oublie'
+import { Route as TableauDeBordRouteImport } from './routes/tableau-de-bord'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const MotDePasseOublieRoute = MotDePasseOublieRouteImport.update({
   path: '/mot-de-passe-oublie',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TableauDeBordRoute = TableauDeBordRouteImport.update({
+  id: '/tableau-de-bord',
+  path: '/tableau-de-bord',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/connexion': typeof ConnexionRoute
   '/inscription': typeof InscriptionRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
+  '/tableau-de-bord': typeof TableauDeBordRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/connexion': typeof ConnexionRoute
   '/inscription': typeof InscriptionRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
+  '/tableau-de-bord': typeof TableauDeBordRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,14 +70,25 @@ export interface FileRoutesById {
   '/connexion': typeof ConnexionRoute
   '/inscription': typeof InscriptionRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
+  '/tableau-de-bord': typeof TableauDeBordRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/conditions' | '/connexion' | '/inscription' | '/mot-de-passe-oublie'
+    | '/'
+    | '/conditions'
+    | '/connexion'
+    | '/inscription'
+    | '/mot-de-passe-oublie'
+    | '/tableau-de-bord'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/conditions' | '/connexion' | '/inscription' | '/mot-de-passe-oublie'
+    | '/'
+    | '/conditions'
+    | '/connexion'
+    | '/inscription'
+    | '/mot-de-passe-oublie'
+    | '/tableau-de-bord'
   id:
     | '__root__'
     | '/'
@@ -77,6 +96,7 @@ export interface FileRouteTypes {
     | '/connexion'
     | '/inscription'
     | '/mot-de-passe-oublie'
+    | '/tableau-de-bord'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -85,6 +105,7 @@ export interface RootRouteChildren {
   ConnexionRoute: typeof ConnexionRoute
   InscriptionRoute: typeof InscriptionRoute
   MotDePasseOublieRoute: typeof MotDePasseOublieRoute
+  TableauDeBordRoute: typeof TableauDeBordRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -124,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MotDePasseOublieRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tableau-de-bord': {
+      id: '/tableau-de-bord'
+      path: '/tableau-de-bord'
+      fullPath: '/tableau-de-bord'
+      preLoaderRoute: typeof TableauDeBordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -133,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConnexionRoute: ConnexionRoute,
   InscriptionRoute: InscriptionRoute,
   MotDePasseOublieRoute: MotDePasseOublieRoute,
+  TableauDeBordRoute: TableauDeBordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
