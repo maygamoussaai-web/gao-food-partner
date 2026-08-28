@@ -41,13 +41,17 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
   --shadow-card: var(--shadow-card);
 }
 
 :root {
   --radius: 0.5rem;
+  /* Texte courant : sans-serif humaniste très lisible. */
   --font-sans:
-    "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    "Inter", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  /* Réservé au wordmark "GAO FOOD" — jamais pour le contenu courant. */
+  --font-display: "Sora", "Inter", system-ui, sans-serif;
 
   --background: oklch(1 0 0);
   --foreground: oklch(0.21 0.02 250);

@@ -94,6 +94,41 @@ export type Database = {
         }
         Relationships: []
       }
+      codes_reset_restaurateur: {
+        Row: {
+          code: string
+          created_at: string
+          expires_at: string
+          id: string
+          restaurateur_id: string
+          utilise: boolean
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          restaurateur_id: string
+          utilise?: boolean
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          restaurateur_id?: string
+          utilise?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "codes_reset_restaurateur_restaurateur_id_fkey"
+            columns: ["restaurateur_id"]
+            isOneToOne: false
+            referencedRelation: "restaurateurs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       commande_articles: {
         Row: {
           boisson_id: string | null
@@ -492,12 +527,52 @@ export type Database = {
         }
         Relationships: []
       }
+      sessions_restaurateur: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          restaurateur_id: string
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          restaurateur_id: string
+          token: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          restaurateur_id?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_restaurateur_restaurateur_id_fkey"
+            columns: ["restaurateur_id"]
+            isOneToOne: false
+            referencedRelation: "restaurateurs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      compter_annulations_jour: {
+        Args: { p_restaurant_id: string }
+        Returns: number
+      }
+      hash_password: { Args: { plain: string }; Returns: string }
+      verify_password: {
+        Args: { hashed: string; plain: string }
+        Returns: boolean
+      }
     }
     Enums: {
       methode_localisation: "audio" | "position"

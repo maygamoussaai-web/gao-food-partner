@@ -5,6 +5,7 @@ import { useState } from "react";
 import { AskiaBackground } from "@/components/askia-background";
 import { Button, ButtonLink } from "@/components/ui-kit";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Wordmark } from "@/components/wordmark";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -55,9 +56,7 @@ function Onboarding() {
       <AskiaBackground />
 
       <header className="flex items-center justify-between px-5 pt-5">
-        <span className="text-sm font-semibold tracking-wide text-foreground">
-          GAO<span className="text-primary"> FOOD</span>
-        </span>
+        <Wordmark className="text-sm text-foreground" />
         <ThemeToggle />
       </header>
 
@@ -87,13 +86,12 @@ function Onboarding() {
         <div className="mt-10 space-y-3">
           {last ? (
             <>
-              <ButtonLink to="/conditions" size="lg" className="w-full">
-                Commencer
+              <ButtonLink to="/inscription" size="lg" className="w-full">
+                Créer mon compte
               </ButtonLink>
-              <p className="text-center text-xs text-muted-foreground">
-                L'inscription et la connexion seront activées dès la connexion à votre base
-                de données.
-              </p>
+              <ButtonLink to="/connexion" variant="outline" size="lg" className="w-full">
+                J'ai déjà un compte
+              </ButtonLink>
             </>
           ) : (
             <Button size="lg" className="w-full" onClick={() => setIndex(index + 1)}>
