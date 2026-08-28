@@ -23,7 +23,17 @@ export type AuthPayload = {
 };
 
 type Action =
-  | { action: "register"; prenom: string; nom: string; numero: string; mot_de_passe: string; restaurant_nom: string; restaurant_logo_url?: string; restaurant_quartier: string }
+  | {
+      action: "register";
+      prenom: string;
+      nom: string;
+      numero: string;
+      mot_de_passe: string;
+      restaurant_nom: string;
+      restaurant_quartier: string;
+      restaurant_logo_base64?: string;
+      restaurant_logo_content_type?: string;
+    }
   | { action: "login"; numero: string; mot_de_passe: string }
   | { action: "session"; token: string }
   | { action: "reset_request"; numero: string }
