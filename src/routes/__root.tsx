@@ -76,15 +76,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { title: "GAO FOOD — Interface restaurateur" },
+      {
+        name: "description",
+        content:
+          "Gérez votre restaurant à Gao : menu, commandes en ligne, promotions et livraison.",
+      },
+      { property: "og:title", content: "GAO FOOD — Interface restaurateur" },
+      {
+        property: "og:description",
+        content:
+          "Gérez votre restaurant à Gao : menu, commandes en ligne, promotions et livraison.",
+      },
       { property: "og:type", content: "website" },
+      { name: "theme-color", content: "#ffffff" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
