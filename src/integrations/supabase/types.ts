@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.17"
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
@@ -62,6 +62,13 @@ export type Database = {
             referencedRelation: "restaurants"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "boissons_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants_notes"
+            referencedColumns: ["restaurant_id"]
+          },
         ]
       }
       clients: {
@@ -93,6 +100,41 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      codes_reset_client: {
+        Row: {
+          client_id: string
+          code: string
+          created_at: string
+          expires_at: string
+          id: string
+          utilise: boolean
+        }
+        Insert: {
+          client_id: string
+          code: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          utilise?: boolean
+        }
+        Update: {
+          client_id?: string
+          code?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          utilise?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "codes_reset_client_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       codes_reset_restaurateur: {
         Row: {
@@ -266,6 +308,13 @@ export type Database = {
             referencedRelation: "restaurants"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "commandes_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants_notes"
+            referencedColumns: ["restaurant_id"]
+          },
         ]
       }
       historique_paiements_solde: {
@@ -294,6 +343,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "restaurants"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "historique_paiements_solde_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants_notes"
+            referencedColumns: ["restaurant_id"]
           },
         ]
       }
@@ -372,6 +428,13 @@ export type Database = {
             referencedRelation: "restaurants"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "plats_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants_notes"
+            referencedColumns: ["restaurant_id"]
+          },
         ]
       }
       promotions: {
@@ -432,6 +495,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "restaurants"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "promotions_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants_notes"
+            referencedColumns: ["restaurant_id"]
           },
         ]
       }
@@ -527,6 +597,38 @@ export type Database = {
         }
         Relationships: []
       }
+      sessions_client: {
+        Row: {
+          client_id: string
+          created_at: string
+          expires_at: string
+          id: string
+          token: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          token: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_client_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sessions_restaurateur: {
         Row: {
           created_at: string
@@ -561,12 +663,24 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      restaurants_notes: {
+        Row: {
+          nombre_notes: number | null
+          note_moyenne: number | null
+          restaurant_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      annuler_commandes_expirees: { Args: never; Returns: undefined }
       compter_annulations_jour: {
         Args: { p_restaurant_id: string }
         Returns: number
+      }
+      enregistrer_note_article: {
+        Args: { p_commande_article_id: string; p_note: number }
+        Returns: undefined
       }
       hash_password: { Args: { plain: string }; Returns: string }
       incrementer_solde: {
