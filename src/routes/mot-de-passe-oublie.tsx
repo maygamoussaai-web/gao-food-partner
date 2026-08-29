@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { Field, FormError, Input } from "@/components/form-field";
+import { PasswordInput } from "@/components/password-input";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui-kit";
 import { Wordmark } from "@/components/wordmark";
@@ -126,8 +127,7 @@ function MotDePasseOublie() {
                 />
               </Field>
               <Field label="Nouveau mot de passe" hint="6 caractères minimum.">
-                <Input
-                  type="password"
+                <PasswordInput
                   autoComplete="new-password"
                   required
                   value={nouveau}
