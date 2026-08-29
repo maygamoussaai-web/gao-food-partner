@@ -6,9 +6,7 @@ import { MediaPicker } from "@/components/media-picker";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui-kit";
 import { Wordmark } from "@/components/wordmark";
-import { useAuth } from "@/hooks/use-auth";
-import { authApi } from "@/lib/auth-api";
-import { fileToBase64 } from "@/lib/home-api";
+import { enregistrerBrouillonInscription, lireBrouillonInscription } from "@/lib/inscription-draft";
 
 export const Route = createFileRoute("/inscription")({
   ssr: false,
@@ -27,63 +25,30 @@ export const Route = createFileRoute("/inscription")({
       },
     ],
   }),
-  component: Inscription,
+  component: InscriptionEtape1,
 });
 
-function Inscription() {
+function InscriptionEtape1() {
   const navigate = useNavigate();
-  const { setSession } = useAuth();
-  const [form, setForm] = useState({
-    prenom: "",
-    nom: "",
-    numero: "",
-    mot_de_passe: "",
-    confirmation: "",
-    restaurant_nom: "",
-    restaurant_quartier: "",
-  });
-  const [logo, setLogo] = useState<File | null>(null);
+  const existant = lireBrouillonInscription();
+  const [nom, setNom] = useState(existant?.restaurant_nom ?? "");
+  const [quartier, setQuartier] = useState(existant?.restaurant_quartier ?? "");
+  const [logo, setLogo] = useState<File | null>(existant?.logo ?? null);
   const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
 
-  const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm((f) => ({ ...f, [key]: e.target.value }));
-
-  async function onSubmit(e: React.FormEvent) {
+  function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    if (form.mot_de_passe.length < 6) {
-      setError("Le mot de passe doit contenir au moins 6 caractères.");
+    if (!nom.trim() || !quartier.trim()) {
+      setError("Le nom et le quartier du restaurant sont obligatoires.");
       return;
     }
-    if (form.mot_de_passe !== form.confirmation) {
-      setError("Les deux mots de passe ne correspondent pas.");
-      return;
-    }
-    setBusy(true);
-    try {
-      let logoPart: { restaurant_logo_base64?: string; restaurant_logo_content_type?: string } = {};
-      if (logo) {
-        const base64 = await fileToBase64(logo);
-        logoPart = { restaurant_logo_base64: base64, restaurant_logo_content_type: logo.type };
-      }
-
-      const payload = await authApi.register({
-        prenom: form.prenom.trim(),
-        nom: form.nom.trim(),
-        numero: form.numero.trim(),
-        mot_de_passe: form.mot_de_passe,
-        restaurant_nom: form.restaurant_nom.trim(),
-        restaurant_quartier: form.restaurant_quartier.trim(),
-        ...logoPart,
-      });
-      setSession(payload);
-      await navigate({ to: "/tableau-de-bord" });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Inscription impossible.");
-    } finally {
-      setBusy(false);
-    }
+    enregistrerBrouillonInscription({
+      restaurant_nom: nom.trim(),
+      restaurant_quartier: quartier.trim(),
+      logo,
+    });
+    void navigate({ to: "/inscription-compte" });
   }
 
   return (
@@ -94,68 +59,33 @@ function Inscription() {
       </header>
 
       <main className="mx-auto w-full max-w-md flex-1 px-6 py-8">
-        <h1 className="text-2xl font-semibold text-foreground">Créer votre compte</h1>
+        <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+          <span className="text-primary">Étape 1/2</span>
+          <span aria-hidden>·</span>
+          <span>Votre restaurant</span>
+        </div>
+        <div className="mt-2 flex gap-1.5" aria-hidden>
+          <span className="h-1 flex-1 rounded-full bg-primary" />
+          <span className="h-1 flex-1 rounded-full bg-muted" />
+        </div>
+
+        <h1 className="mt-6 text-2xl font-semibold text-foreground">Parlez-nous de votre restaurant</h1>
         <p className="mt-2 text-[15px] text-muted-foreground">
-          Vos informations personnelles et celles de votre restaurant.
+          Ces informations apparaîtront sur votre vitrine.
         </p>
 
         <form className="mt-8 space-y-4" onSubmit={onSubmit}>
           <FormError>{error}</FormError>
 
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Prénom">
-              <Input required value={form.prenom} onChange={set("prenom")} autoComplete="given-name" />
-            </Field>
-            <Field label="Nom">
-              <Input required value={form.nom} onChange={set("nom")} autoComplete="family-name" />
-            </Field>
-          </div>
-
-          <Field label="Numéro de téléphone">
-            <Input
-              type="tel"
-              inputMode="tel"
-              autoComplete="tel"
-              required
-              value={form.numero}
-              onChange={set("numero")}
-              placeholder="Ex : 76 00 00 00"
-            />
-          </Field>
-
-          <Field label="Mot de passe" hint="6 caractères minimum.">
-            <Input
-              type="password"
-              autoComplete="new-password"
-              required
-              value={form.mot_de_passe}
-              onChange={set("mot_de_passe")}
-            />
-          </Field>
-
-          <Field label="Confirmer le mot de passe">
-            <Input
-              type="password"
-              autoComplete="new-password"
-              required
-              value={form.confirmation}
-              onChange={set("confirmation")}
-            />
-          </Field>
-
-          <div className="pt-2">
-            <h2 className="text-sm font-semibold text-foreground">Votre restaurant</h2>
-          </div>
-
           <Field label="Nom du restaurant">
-            <Input required value={form.restaurant_nom} onChange={set("restaurant_nom")} />
+            <Input required value={nom} onChange={(e) => setNom(e.target.value)} />
           </Field>
 
           <Field label="Quartier">
             <Input
               required
-              value={form.restaurant_quartier}
-              onChange={set("restaurant_quartier")}
+              value={quartier}
+              onChange={(e) => setQuartier(e.target.value)}
               placeholder="Ex : Château, Djidara…"
             />
           </Field>
@@ -169,17 +99,9 @@ function Inscription() {
             hint="Prenez une photo ou choisissez-la dans votre galerie."
           />
 
-          <Button type="submit" size="lg" className="w-full" disabled={busy}>
-            {busy ? "Création…" : "Créer mon compte"}
+          <Button type="submit" size="lg" className="w-full">
+            Continuer
           </Button>
-
-          <p className="text-center text-xs text-muted-foreground">
-            En créant un compte, vous acceptez les{" "}
-            <Link to="/conditions" className="underline underline-offset-4">
-              conditions d'utilisation
-            </Link>
-            .
-          </p>
         </form>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
