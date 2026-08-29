@@ -15,6 +15,7 @@ import { Route as CompteRouteImport } from './routes/compte'
 import { Route as ConditionsRouteImport } from './routes/conditions'
 import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as InscriptionRouteImport } from './routes/inscription'
+import { Route as InscriptionCompteRouteImport } from './routes/inscription-compte'
 import { Route as MenuRouteImport } from './routes/menu'
 import { Route as MotDePasseOublieRouteImport } from './routes/mot-de-passe-oublie'
 import { Route as RestaurantRouteImport } from './routes/restaurant'
@@ -50,6 +51,11 @@ const InscriptionRoute = InscriptionRouteImport.update({
   path: '/inscription',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InscriptionCompteRoute = InscriptionCompteRouteImport.update({
+  id: '/inscription-compte',
+  path: '/inscription-compte',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MenuRoute = MenuRouteImport.update({
   id: '/menu',
   path: '/menu',
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/conditions': typeof ConditionsRoute
   '/connexion': typeof ConnexionRoute
   '/inscription': typeof InscriptionRoute
+  '/inscription-compte': typeof InscriptionCompteRoute
   '/menu': typeof MenuRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/restaurant': typeof RestaurantRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/conditions': typeof ConditionsRoute
   '/connexion': typeof ConnexionRoute
   '/inscription': typeof InscriptionRoute
+  '/inscription-compte': typeof InscriptionCompteRoute
   '/menu': typeof MenuRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/restaurant': typeof RestaurantRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/conditions': typeof ConditionsRoute
   '/connexion': typeof ConnexionRoute
   '/inscription': typeof InscriptionRoute
+  '/inscription-compte': typeof InscriptionCompteRoute
   '/menu': typeof MenuRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/restaurant': typeof RestaurantRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/conditions'
     | '/connexion'
     | '/inscription'
+    | '/inscription-compte'
     | '/menu'
     | '/mot-de-passe-oublie'
     | '/restaurant'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/conditions'
     | '/connexion'
     | '/inscription'
+    | '/inscription-compte'
     | '/menu'
     | '/mot-de-passe-oublie'
     | '/restaurant'
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
     | '/conditions'
     | '/connexion'
     | '/inscription'
+    | '/inscription-compte'
     | '/menu'
     | '/mot-de-passe-oublie'
     | '/restaurant'
@@ -154,6 +166,7 @@ export interface RootRouteChildren {
   ConditionsRoute: typeof ConditionsRoute
   ConnexionRoute: typeof ConnexionRoute
   InscriptionRoute: typeof InscriptionRoute
+  InscriptionCompteRoute: typeof InscriptionCompteRoute
   MenuRoute: typeof MenuRoute
   MotDePasseOublieRoute: typeof MotDePasseOublieRoute
   RestaurantRoute: typeof RestaurantRoute
@@ -204,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InscriptionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/inscription-compte': {
+      id: '/inscription-compte'
+      path: '/inscription-compte'
+      fullPath: '/inscription-compte'
+      preLoaderRoute: typeof InscriptionCompteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/menu': {
       id: '/menu'
       path: '/menu'
@@ -242,6 +262,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConditionsRoute: ConditionsRoute,
   ConnexionRoute: ConnexionRoute,
   InscriptionRoute: InscriptionRoute,
+  InscriptionCompteRoute: InscriptionCompteRoute,
   MenuRoute: MenuRoute,
   MotDePasseOublieRoute: MotDePasseOublieRoute,
   RestaurantRoute: RestaurantRoute,
