@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import { Field, FormError, Input } from "@/components/form-field";
+import { PasswordInput } from "@/components/password-input";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui-kit";
 import { Wordmark } from "@/components/wordmark";
@@ -84,8 +85,7 @@ function Connexion() {
           </Field>
 
           <Field label="Mot de passe">
-            <Input
-              type="password"
+            <PasswordInput
               autoComplete="current-password"
               required
               value={motDePasse}
