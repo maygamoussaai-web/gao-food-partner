@@ -5,18 +5,17 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * GAO FOOD — design system.
- * Clair : primaire blanc, secondaire bleu clair.
- * Sombre : primaire noir, secondaire bleu, tertiaire blanc.
- * Sobriété type WhatsApp : peu de couleurs, arrondis discrets.
+ * GAO FOOD — direction visuelle 2026.
+ * Palette chaude et conviviale (corail, orangé, ambre) + accent bleu nuit profond.
+ * Dégradés maîtrisés, animations franches, lisibilité préservée.
  */
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 12px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
@@ -33,6 +32,8 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-night: var(--night);
+  --color-night-foreground: var(--night-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
@@ -43,79 +44,99 @@
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
   --shadow-card: var(--shadow-card);
+  --shadow-glow: var(--shadow-glow);
 }
 
 :root {
-  --radius: 0.5rem;
-  /* Texte courant : sans-serif humaniste très lisible. */
+  --radius: 0.85rem;
   --font-sans:
     "Inter", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  /* Réservé au wordmark "GAO FOOD" — jamais pour le contenu courant. */
+  /* Réservé au wordmark "GAO FOOD". */
   --font-display: "Sora", "Inter", system-ui, sans-serif;
 
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.21 0.02 250);
-  --surface: oklch(0.98 0.008 240);
-  --surface-foreground: oklch(0.21 0.02 250);
+  --background: oklch(0.99 0.008 70);
+  --foreground: oklch(0.24 0.04 265);
+  --surface: oklch(0.97 0.014 70);
+  --surface-foreground: oklch(0.24 0.04 265);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.02 250);
+  --card-foreground: oklch(0.24 0.04 265);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.02 250);
+  --popover-foreground: oklch(0.24 0.04 265);
 
-  --primary: oklch(0.62 0.13 240);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.93 0.04 240);
-  --secondary-foreground: oklch(0.35 0.08 245);
-  --muted: oklch(0.96 0.008 240);
-  --muted-foreground: oklch(0.52 0.02 250);
-  --accent: oklch(0.93 0.04 240);
-  --accent-foreground: oklch(0.3 0.07 245);
+  --primary: oklch(0.66 0.19 32);
+  --primary-foreground: oklch(0.99 0.01 60);
+  --secondary: oklch(0.95 0.03 60);
+  --secondary-foreground: oklch(0.42 0.13 38);
+  --muted: oklch(0.96 0.012 70);
+  --muted-foreground: oklch(0.53 0.03 265);
+  --accent: oklch(0.8 0.15 72);
+  --accent-foreground: oklch(0.28 0.07 50);
 
-  --destructive: oklch(0.58 0.19 25);
+  --night: oklch(0.28 0.07 265);
+  --night-foreground: oklch(0.98 0.01 70);
+
+  --destructive: oklch(0.58 0.2 22);
   --destructive-foreground: oklch(1 0 0);
-  --success: oklch(0.62 0.13 155);
+  --success: oklch(0.62 0.14 155);
   --success-foreground: oklch(1 0 0);
 
-  --border: oklch(0.91 0.012 245);
-  --input: oklch(0.91 0.012 245);
-  --ring: oklch(0.62 0.13 240);
+  --border: oklch(0.91 0.014 60);
+  --input: oklch(0.9 0.016 60);
+  --ring: oklch(0.66 0.19 32);
 
-  --shadow-card: 0 1px 2px oklch(0.21 0.02 250 / 0.06);
-  --bg-overlay: oklch(1 0 0 / 0.9);
-  --bg-image-opacity: 0.14;
+  --shadow-card: 0 1px 2px oklch(0.3 0.05 40 / 0.06), 0 8px 24px -16px oklch(0.3 0.05 40 / 0.25);
+  --shadow-glow: 0 10px 30px -12px oklch(0.66 0.19 32 / 0.55);
+
+  --gradient-primary: linear-gradient(135deg, oklch(0.7 0.19 38) 0%, oklch(0.75 0.17 62) 100%);
+  --gradient-night: linear-gradient(135deg, oklch(0.3 0.08 268) 0%, oklch(0.42 0.11 30) 100%);
+  --gradient-text: linear-gradient(100deg, oklch(0.62 0.2 28) 0%, oklch(0.72 0.17 66) 100%);
+  --mesh-1: oklch(0.85 0.14 48 / 0.5);
+  --mesh-2: oklch(0.85 0.11 72 / 0.45);
+  --mesh-3: oklch(0.72 0.1 265 / 0.22);
+  --bg-image-opacity: 0.1;
 }
 
 .dark {
-  --background: oklch(0.16 0.008 250);
-  --foreground: oklch(0.97 0.003 250);
-  --surface: oklch(0.21 0.01 250);
-  --surface-foreground: oklch(0.97 0.003 250);
-  --card: oklch(0.21 0.01 250);
-  --card-foreground: oklch(0.97 0.003 250);
-  --popover: oklch(0.21 0.01 250);
-  --popover-foreground: oklch(0.97 0.003 250);
+  --background: oklch(0.18 0.025 268);
+  --foreground: oklch(0.97 0.006 70);
+  --surface: oklch(0.23 0.03 268);
+  --surface-foreground: oklch(0.97 0.006 70);
+  --card: oklch(0.23 0.028 268);
+  --card-foreground: oklch(0.97 0.006 70);
+  --popover: oklch(0.23 0.028 268);
+  --popover-foreground: oklch(0.97 0.006 70);
 
-  --primary: oklch(0.6 0.16 250);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.27 0.02 250);
-  --secondary-foreground: oklch(0.97 0.003 250);
-  --muted: oklch(0.25 0.014 250);
-  --muted-foreground: oklch(0.68 0.02 250);
-  --accent: oklch(0.29 0.03 250);
-  --accent-foreground: oklch(0.97 0.003 250);
+  --primary: oklch(0.7 0.18 38);
+  --primary-foreground: oklch(0.17 0.03 268);
+  --secondary: oklch(0.29 0.035 268);
+  --secondary-foreground: oklch(0.93 0.03 60);
+  --muted: oklch(0.27 0.03 268);
+  --muted-foreground: oklch(0.72 0.02 268);
+  --accent: oklch(0.76 0.15 72);
+  --accent-foreground: oklch(0.2 0.04 268);
 
-  --destructive: oklch(0.62 0.19 25);
+  --night: oklch(0.95 0.02 70);
+  --night-foreground: oklch(0.2 0.04 268);
+
+  --destructive: oklch(0.64 0.19 25);
   --destructive-foreground: oklch(0.99 0 0);
-  --success: oklch(0.66 0.14 155);
-  --success-foreground: oklch(0.16 0.008 250);
+  --success: oklch(0.68 0.14 155);
+  --success-foreground: oklch(0.18 0.025 268);
 
   --border: oklch(1 0 0 / 0.1);
   --input: oklch(1 0 0 / 0.14);
-  --ring: oklch(0.6 0.16 250);
+  --ring: oklch(0.7 0.18 38);
 
-  --shadow-card: 0 1px 2px oklch(0 0 0 / 0.4);
-  --bg-overlay: oklch(0.16 0.008 250 / 0.93);
-  --bg-image-opacity: 0.1;
+  --shadow-card: 0 1px 2px oklch(0 0 0 / 0.5), 0 12px 30px -20px oklch(0 0 0 / 0.8);
+  --shadow-glow: 0 12px 32px -14px oklch(0.7 0.18 38 / 0.6);
+
+  --gradient-primary: linear-gradient(135deg, oklch(0.66 0.19 34) 0%, oklch(0.72 0.16 66) 100%);
+  --gradient-night: linear-gradient(135deg, oklch(0.26 0.05 268) 0%, oklch(0.34 0.09 32) 100%);
+  --gradient-text: linear-gradient(100deg, oklch(0.78 0.15 34) 0%, oklch(0.85 0.13 72) 100%);
+  --mesh-1: oklch(0.6 0.18 34 / 0.3);
+  --mesh-2: oklch(0.6 0.14 72 / 0.22);
+  --mesh-3: oklch(0.45 0.12 268 / 0.4);
+  --bg-image-opacity: 0.07;
 }
 
 @layer base {
@@ -132,10 +153,18 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.011em;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
   }
 }
 
-/* Fond discret : photo du Tombeau des Askia sous un voile uni. */
+/* ---------- Fonds ---------- */
+
 @utility bg-askia {
   position: relative;
   isolation: isolate;
@@ -151,9 +180,162 @@
   opacity: var(--bg-image-opacity);
 }
 
+/* Mesh gradient doux, fixe derrière le contenu. */
+@utility bg-mesh {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    radial-gradient(60% 45% at 12% 4%, var(--mesh-1) 0%, transparent 70%),
+    radial-gradient(50% 40% at 92% 12%, var(--mesh-2) 0%, transparent 72%),
+    radial-gradient(70% 50% at 50% 108%, var(--mesh-3) 0%, transparent 75%);
+}
+
+@utility gradient-primary {
+  background-image: var(--gradient-primary);
+}
+
+@utility gradient-night {
+  background-image: var(--gradient-night);
+}
+
+@utility text-gradient {
+  background-image: var(--gradient-text);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
 @utility card-surface {
-  background-color: var(--color-card);
+  background-color: color-mix(in oklab, var(--color-card) 88%, transparent);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-card);
+  backdrop-filter: blur(10px);
+}
+
+@utility card-highlight {
+  border: 1px solid color-mix(in oklab, var(--color-primary) 26%, transparent);
+  border-radius: var(--radius-xl);
+  background-image:
+    linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--color-primary) 14%, transparent) 0%,
+      color-mix(in oklab, var(--color-accent) 12%, transparent) 100%
+    );
+  box-shadow: var(--shadow-card);
+}
+
+@utility press {
+  transition:
+    transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 200ms ease,
+    background-color 200ms ease;
+}
+@utility press-active {
+  transform: scale(0.97);
+}
+
+/* ---------- Animations ---------- */
+
+@keyframes gao-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes gao-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gao-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes gao-breathe {
+  0%,
+  100% {
+    transform: scale(0.86);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+@keyframes gao-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes gao-steam {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scaleX(0.7);
+  }
+  40% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px) scaleX(1.15);
+  }
+}
+
+@utility animate-rise {
+  animation: gao-rise 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility animate-fade {
+  animation: gao-fade 400ms ease both;
+}
+
+/* Entrée en cascade : `style={{ ['--i']: index }}` sur chaque enfant. */
+@utility stagger {
+  animation: gao-rise 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+@utility skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: color-mix(in oklab, var(--color-muted) 90%, transparent);
+  border-radius: var(--radius-lg);
+}
+
+@utility skeleton-shine {
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--color-card) 75%, transparent),
+    transparent
+  );
+  animation: gao-shimmer 1.5s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
