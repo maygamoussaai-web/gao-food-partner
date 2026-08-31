@@ -14,6 +14,7 @@ import { Route as CommandesRouteImport } from './routes/commandes'
 import { Route as CompteRouteImport } from './routes/compte'
 import { Route as ConditionsRouteImport } from './routes/conditions'
 import { Route as ConnexionRouteImport } from './routes/connexion'
+import { Route as HistoriqueRouteImport } from './routes/historique'
 import { Route as InscriptionRouteImport } from './routes/inscription'
 import { Route as InscriptionCompteRouteImport } from './routes/inscription-compte'
 import { Route as MenuRouteImport } from './routes/menu'
@@ -44,6 +45,11 @@ const ConditionsRoute = ConditionsRouteImport.update({
 const ConnexionRoute = ConnexionRouteImport.update({
   id: '/connexion',
   path: '/connexion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoriqueRoute = HistoriqueRouteImport.update({
+  id: '/historique',
+  path: '/historique',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InscriptionRoute = InscriptionRouteImport.update({
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/compte': typeof CompteRoute
   '/conditions': typeof ConditionsRoute
   '/connexion': typeof ConnexionRoute
+  '/historique': typeof HistoriqueRoute
   '/inscription': typeof InscriptionRoute
   '/inscription-compte': typeof InscriptionCompteRoute
   '/menu': typeof MenuRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/compte': typeof CompteRoute
   '/conditions': typeof ConditionsRoute
   '/connexion': typeof ConnexionRoute
+  '/historique': typeof HistoriqueRoute
   '/inscription': typeof InscriptionRoute
   '/inscription-compte': typeof InscriptionCompteRoute
   '/menu': typeof MenuRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/compte': typeof CompteRoute
   '/conditions': typeof ConditionsRoute
   '/connexion': typeof ConnexionRoute
+  '/historique': typeof HistoriqueRoute
   '/inscription': typeof InscriptionRoute
   '/inscription-compte': typeof InscriptionCompteRoute
   '/menu': typeof MenuRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/compte'
     | '/conditions'
     | '/connexion'
+    | '/historique'
     | '/inscription'
     | '/inscription-compte'
     | '/menu'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/compte'
     | '/conditions'
     | '/connexion'
+    | '/historique'
     | '/inscription'
     | '/inscription-compte'
     | '/menu'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/compte'
     | '/conditions'
     | '/connexion'
+    | '/historique'
     | '/inscription'
     | '/inscription-compte'
     | '/menu'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   CompteRoute: typeof CompteRoute
   ConditionsRoute: typeof ConditionsRoute
   ConnexionRoute: typeof ConnexionRoute
+  HistoriqueRoute: typeof HistoriqueRoute
   InscriptionRoute: typeof InscriptionRoute
   InscriptionCompteRoute: typeof InscriptionCompteRoute
   MenuRoute: typeof MenuRoute
@@ -208,6 +221,13 @@ declare module '@tanstack/react-router' {
       path: '/connexion'
       fullPath: '/connexion'
       preLoaderRoute: typeof ConnexionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historique': {
+      id: '/historique'
+      path: '/historique'
+      fullPath: '/historique'
+      preLoaderRoute: typeof HistoriqueRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inscription': {
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompteRoute: CompteRoute,
   ConditionsRoute: ConditionsRoute,
   ConnexionRoute: ConnexionRoute,
+  HistoriqueRoute: HistoriqueRoute,
   InscriptionRoute: InscriptionRoute,
   InscriptionCompteRoute: InscriptionCompteRoute,
   MenuRoute: MenuRoute,
