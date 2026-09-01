@@ -47,10 +47,10 @@ function Connexion() {
     try {
       const payload = await authApi.login(numero.trim(), motDePasse);
       setSession(payload);
-      await navigate({ to: "/tableau-de-bord" });
+      // Écran de transition : laisse le temps à l'app de se préparer avant l'accueil.
+      await navigate({ to: "/bienvenue" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Connexion impossible.");
-    } finally {
       setBusy(false);
     }
   }
@@ -64,48 +64,53 @@ function Connexion() {
         <div className="space-y-2 text-center text-sm">
           <Link
             to="/mot-de-passe-oublie"
-            className="block text-muted-foreground underline underline-offset-4 hover:text-foreground"
+            className={`block text-muted-foreground underline underline-offset-4 hover:text-foreground ${busy ? "pointer-events-none opacity-50" : ""}`}
           >
             Mot de passe oublié ?
           </Link>
           <p className="text-muted-foreground">
             Pas encore de compte ?{" "}
-            <Link to="/inscription" className="font-semibold text-primary underline underline-offset-4">
+            <Link
+              to="/inscription"
+              className={`font-semibold text-primary underline underline-offset-4 ${busy ? "pointer-events-none opacity-50" : ""}`}
+            >
               Créer un compte
             </Link>
           </p>
         </div>
       }
     >
-      <form className="space-y-4" onSubmit={onSubmit}>
-        <FormError>{error}</FormError>
+      <fieldset disabled={busy} className="space-y-4 border-0 p-0 m-0">
+        <form className="space-y-4" onSubmit={onSubmit}>
+          <FormError>{error}</FormError>
 
-        <Field label="Numéro de téléphone">
-          <Input
-            type="tel"
-            inputMode="tel"
-            autoComplete="tel"
-            required
-            value={numero}
-            onChange={(e) => setNumero(e.target.value)}
-            placeholder="Ex : 76 00 00 00"
-          />
-        </Field>
+          <Field label="Numéro de téléphone">
+            <Input
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              required
+              value={numero}
+              onChange={(e) => setNumero(e.target.value)}
+              placeholder="Ex : 76 00 00 00"
+            />
+          </Field>
 
-        <Field label="Mot de passe">
-          <PasswordInput
-            autoComplete="current-password"
-            required
-            value={motDePasse}
-            onChange={(e) => setMotDePasse(e.target.value)}
-            placeholder="••••••••"
-          />
-        </Field>
+          <Field label="Mot de passe">
+            <PasswordInput
+              autoComplete="current-password"
+              required
+              value={motDePasse}
+              onChange={(e) => setMotDePasse(e.target.value)}
+              placeholder="••••••••"
+            />
+          </Field>
 
-        <Button type="submit" size="lg" className="w-full" loading={busy}>
-          {busy ? "Connexion…" : "Se connecter"}
-        </Button>
-      </form>
+          <Button type="submit" size="lg" className="w-full" loading={busy}>
+            {busy ? "Connexion…" : "Se connecter"}
+          </Button>
+        </form>
+      </fieldset>
     </AuthScene>
   );
 }
