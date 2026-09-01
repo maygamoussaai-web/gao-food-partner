@@ -1,11 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
+import { AuthScene } from "@/components/auth-scene";
 import { Field, FormError, Input } from "@/components/form-field";
 import { MediaPicker } from "@/components/media-picker";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui-kit";
-import { Wordmark } from "@/components/wordmark";
 import { enregistrerBrouillonInscription, lireBrouillonInscription } from "@/lib/inscription-draft";
 
 export const Route = createFileRoute("/inscription")({
@@ -27,6 +26,19 @@ export const Route = createFileRoute("/inscription")({
   }),
   component: InscriptionEtape1,
 });
+
+export function BarreEtape({ sur = 2, etape = 1 }: { sur?: number; etape?: number }) {
+  return (
+    <div className="mt-2 flex gap-1.5" aria-hidden>
+      {Array.from({ length: sur }).map((_, i) => (
+        <span
+          key={i}
+          className={`h-1.5 flex-1 rounded-full ${i < etape ? "gradient-secondary" : "bg-muted"}`}
+        />
+      ))}
+    </div>
+  );
+}
 
 function InscriptionEtape1() {
   const navigate = useNavigate();
@@ -52,65 +64,49 @@ function InscriptionEtape1() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <header className="flex items-center justify-between px-5 pt-5">
-        <Wordmark className="text-sm" />
-        <ThemeToggle />
-      </header>
-
-      <main className="mx-auto w-full max-w-md flex-1 px-6 py-8">
-        <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-          <span className="text-primary">Étape 1/2</span>
-          <span aria-hidden>·</span>
-          <span>Votre restaurant</span>
-        </div>
-        <div className="mt-2 flex gap-1.5" aria-hidden>
-          <span className="h-1 flex-1 rounded-full bg-primary" />
-          <span className="h-1 flex-1 rounded-full bg-muted" />
-        </div>
-
-        <h1 className="mt-6 text-2xl font-semibold text-foreground">Parlez-nous de votre restaurant</h1>
-        <p className="mt-2 text-[15px] text-muted-foreground">
-          Ces informations apparaîtront sur votre vitrine.
-        </p>
-
-        <form className="mt-8 space-y-4" onSubmit={onSubmit}>
-          <FormError>{error}</FormError>
-
-          <Field label="Nom du restaurant">
-            <Input required value={nom} onChange={(e) => setNom(e.target.value)} />
-          </Field>
-
-          <Field label="Quartier">
-            <Input
-              required
-              value={quartier}
-              onChange={(e) => setQuartier(e.target.value)}
-              placeholder="Ex : Château, Djidara…"
-            />
-          </Field>
-
-          <MediaPicker
-            label="Logo (facultatif)"
-            accept="image/*"
-            value={logo}
-            onChange={setLogo}
-            rond
-            hint="Prenez une photo ou choisissez-la dans votre galerie."
-          />
-
-          <Button type="submit" size="lg" className="w-full">
-            Continuer
-          </Button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-muted-foreground">
+    <AuthScene
+      accroche="Étape 1 / 2 · Votre restaurant"
+      titre="Parlez-nous de votre restaurant"
+      texte="Ces informations apparaîtront sur votre vitrine à Gao."
+      etape={<BarreEtape etape={1} />}
+      bas={
+        <p className="text-center text-sm text-muted-foreground">
           Déjà inscrit ?{" "}
-          <Link to="/connexion" className="font-medium text-primary underline underline-offset-4">
+          <Link to="/connexion" className="font-semibold text-primary underline underline-offset-4">
             Se connecter
           </Link>
         </p>
-      </main>
-    </div>
+      }
+    >
+      <form className="space-y-4" onSubmit={onSubmit}>
+        <FormError>{error}</FormError>
+
+        <Field label="Nom du restaurant">
+          <Input required value={nom} onChange={(e) => setNom(e.target.value)} />
+        </Field>
+
+        <Field label="Quartier">
+          <Input
+            required
+            value={quartier}
+            onChange={(e) => setQuartier(e.target.value)}
+            placeholder="Ex : Château, Djidara…"
+          />
+        </Field>
+
+        <MediaPicker
+          label="Logo (facultatif)"
+          accept="image/*"
+          value={logo}
+          onChange={setLogo}
+          rond
+          hint="Prenez une photo ou choisissez-la dans votre galerie."
+        />
+
+        <Button type="submit" size="lg" className="w-full">
+          Continuer
+        </Button>
+      </form>
+    </AuthScene>
   );
 }
