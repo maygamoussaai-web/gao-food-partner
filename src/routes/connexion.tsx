@@ -1,11 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
+import { AuthScene } from "@/components/auth-scene";
 import { Field, FormError, Input } from "@/components/form-field";
 import { PasswordInput } from "@/components/password-input";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui-kit";
-import { Wordmark } from "@/components/wordmark";
 import { useAuth } from "@/hooks/use-auth";
 import { authApi } from "@/lib/auth-api";
 
@@ -57,49 +56,12 @@ function Connexion() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <header className="flex items-center justify-between px-5 pt-5">
-        <Wordmark className="text-sm" />
-        <ThemeToggle />
-      </header>
-
-      <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-6 py-10">
-        <h1 className="text-2xl font-semibold text-foreground">Connexion</h1>
-        <p className="mt-2 text-[15px] text-muted-foreground">
-          Entrez votre numéro et votre mot de passe pour accéder à votre restaurant.
-        </p>
-
-        <form className="mt-8 space-y-4" onSubmit={onSubmit}>
-          <FormError>{error}</FormError>
-
-          <Field label="Numéro de téléphone">
-            <Input
-              type="tel"
-              inputMode="tel"
-              autoComplete="tel"
-              required
-              value={numero}
-              onChange={(e) => setNumero(e.target.value)}
-              placeholder="Ex : 76 00 00 00"
-            />
-          </Field>
-
-          <Field label="Mot de passe">
-            <PasswordInput
-              autoComplete="current-password"
-              required
-              value={motDePasse}
-              onChange={(e) => setMotDePasse(e.target.value)}
-              placeholder="••••••••"
-            />
-          </Field>
-
-          <Button type="submit" size="lg" className="w-full" disabled={busy}>
-            {busy ? "Connexion…" : "Se connecter"}
-          </Button>
-        </form>
-
-        <div className="mt-6 space-y-2 text-center text-sm">
+    <AuthScene
+      accroche="Espace restaurateur"
+      titre="Content de vous revoir 👋"
+      texte="Entrez votre numéro et votre mot de passe pour retrouver votre restaurant."
+      bas={
+        <div className="space-y-2 text-center text-sm">
           <Link
             to="/mot-de-passe-oublie"
             className="block text-muted-foreground underline underline-offset-4 hover:text-foreground"
@@ -108,12 +70,42 @@ function Connexion() {
           </Link>
           <p className="text-muted-foreground">
             Pas encore de compte ?{" "}
-            <Link to="/inscription" className="font-medium text-primary underline underline-offset-4">
+            <Link to="/inscription" className="font-semibold text-primary underline underline-offset-4">
               Créer un compte
             </Link>
           </p>
         </div>
-      </main>
-    </div>
+      }
+    >
+      <form className="space-y-4" onSubmit={onSubmit}>
+        <FormError>{error}</FormError>
+
+        <Field label="Numéro de téléphone">
+          <Input
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            required
+            value={numero}
+            onChange={(e) => setNumero(e.target.value)}
+            placeholder="Ex : 76 00 00 00"
+          />
+        </Field>
+
+        <Field label="Mot de passe">
+          <PasswordInput
+            autoComplete="current-password"
+            required
+            value={motDePasse}
+            onChange={(e) => setMotDePasse(e.target.value)}
+            placeholder="••••••••"
+          />
+        </Field>
+
+        <Button type="submit" size="lg" className="w-full" loading={busy}>
+          {busy ? "Connexion…" : "Se connecter"}
+        </Button>
+      </form>
+    </AuthScene>
   );
 }
