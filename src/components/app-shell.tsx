@@ -4,11 +4,12 @@ import { useEffect, type ReactNode } from "react";
 
 import { BottomNav, BOTTOM_NAV_SPACE } from "@/components/bottom-nav";
 import { GaoLoader, SkeletonListe } from "@/components/loader";
+import { AppBackground } from "@/components/svg-backgrounds";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/hooks/use-auth";
 
 /**
- * Coquille commune des pages authentifiées : fond mesh, en-tête collant,
+ * Coquille commune des pages authentifiées : fond SVG, en-tête collant,
  * contenu centré et barre de navigation basse.
  */
 export function AppShell({
@@ -36,7 +37,7 @@ export function AppShell({
   if (!pret || !restaurateur) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="bg-mesh" />
+        <AppBackground />
         <GaoLoader />
       </div>
     );
@@ -44,7 +45,7 @@ export function AppShell({
 
   return (
     <div className="min-h-screen" style={{ paddingBottom: BOTTOM_NAV_SPACE }}>
-      <div className="bg-mesh" />
+      <AppBackground />
 
       <header className="sticky top-0 z-30 border-b border-border/60 bg-background/70 backdrop-blur-xl">
         <div className="mx-auto flex max-w-3xl items-center gap-2 px-4 py-3">
