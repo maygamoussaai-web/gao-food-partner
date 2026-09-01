@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ClipboardList, Megaphone, Store } from "lucide-react";
 import { useState } from "react";
 
-import askia from "@/assets/askia.jpg";
 import { Button, ButtonLink } from "@/components/ui-kit";
+import { OnboardingBackground } from "@/components/svg-backgrounds";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Wordmark } from "@/components/wordmark";
 
@@ -58,19 +58,7 @@ function Onboarding() {
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden bg-background">
-      {/* Visuel plein cadre : Tombeau des Askia, chaleur orangée. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <img
-          src={askia}
-          alt=""
-          className="h-[58vh] w-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-background/60 to-background" />
-        <div
-          className="absolute inset-x-0 top-0 h-[58vh] opacity-70 mix-blend-multiply"
-          style={{ backgroundImage: "var(--gradient-secondary)" }}
-        />
-      </div>
+      <OnboardingBackground />
 
       <header className="flex items-center justify-between px-5 pt-5">
         <Wordmark className="text-base text-foreground" />
@@ -79,7 +67,7 @@ function Onboarding() {
 
       <h1 className="sr-only">GAO FOOD — Interface restaurateur</h1>
 
-      {/* Bloc d'accroche haut, sur la photo */}
+      {/* Bloc d'accroche haut */}
       <div className="mx-auto w-full max-w-md flex-1 px-6 pt-10">
         <span className="chip">Restaurateurs de Gao</span>
         <p className="animate-rise mt-4 text-[30px] font-extrabold leading-[1.1] tracking-tight text-foreground">
