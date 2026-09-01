@@ -364,3 +364,41 @@
     transition-duration: 0.01ms !important;
   }
 }
+/* ---------- Dérive lente des formes du fond d'onboarding ---------- */
+
+@keyframes gao-blob-drift-a {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  33% {
+    transform: translate(3%, -4%) rotate(8deg) scale(1.08);
+  }
+  66% {
+    transform: translate(-3%, 3%) rotate(-6deg) scale(0.96);
+  }
+}
+
+@keyframes gao-blob-drift-b {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  40% {
+    transform: translate(-4%, 3%) rotate(-10deg) scale(1.05);
+  }
+  75% {
+    transform: translate(3%, -3%) rotate(6deg) scale(0.97);
+  }
+}
+
+@utility animate-blob-a {
+  animation: gao-blob-drift-a 22s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@utility animate-blob-b {
+  animation: gao-blob-drift-b 26s ease-in-out infinite;
+  transform-origin: center;
+}
+
