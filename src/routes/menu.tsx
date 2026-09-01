@@ -239,15 +239,22 @@ function RemettreBouton({
   );
 }
 
-/** Feuille modale glissante, façon bottom-sheet mobile. */
+/**
+ * Feuille modale glissante, façon bottom-sheet mobile.
+ * En-tête fixe + corps défilant + PIED FIXE pour l'action principale, afin
+ * qu'un long formulaire (ou le clavier mobile) ne pousse jamais le bouton
+ * de validation hors champ.
+ */
 function Feuille({
   titre,
   onClose,
   children,
+  pied,
 }: {
   titre: string;
   onClose: () => void;
   children: React.ReactNode;
+  pied?: React.ReactNode;
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
@@ -256,8 +263,8 @@ function Feuille({
         onClick={onClose}
         aria-hidden
       />
-      <div className="relative z-10 max-h-[92vh] w-full overflow-y-auto rounded-t-2xl border border-border bg-background p-5 shadow-xl animate-in slide-in-from-bottom duration-250 sm:max-w-lg sm:rounded-2xl">
-        <div className="mb-4 flex items-start justify-between gap-3">
+      <div className="relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl border border-border bg-background shadow-xl animate-in slide-in-from-bottom duration-250 sm:max-w-lg sm:rounded-2xl">
+        <div className="flex items-start justify-between gap-3 border-b border-border/60 p-5 pb-4">
           <h2 className="text-lg font-semibold text-foreground">{titre}</h2>
           <button
             type="button"
@@ -268,7 +275,12 @@ function Feuille({
             <X className="h-4 w-4" />
           </button>
         </div>
-        {children}
+
+        <div className="min-h-0 flex-1 overflow-y-auto p-5">{children}</div>
+
+        {pied ? (
+          <div className="border-t border-border/60 bg-background/95 p-5 pt-4 backdrop-blur">{pied}</div>
+        ) : null}
       </div>
     </div>
   );
@@ -318,48 +330,60 @@ function FormulaireArticle({
     onError: (e: Error) => setErreur(e.message),
   });
 
+  const idFormulaire = "formulaire-ajout-article";
+
   return (
-    <Feuille titre={type === "plat" ? "Ajouter un plat" : "Ajouter une boisson"} onClose={onClose}>
-      <form
-        className="space-y-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          setErreur("");
-          m.mutate();
-        }}
-      >
-        <MediaPicker value={photo} onChange={setPhoto} label="Photo" hint="Obligatoire." />
-        <Field label="Nom">
-          <Input value={nom} onChange={(e) => setNom(e.target.value)} placeholder="Riz au gras" />
-        </Field>
-        <Field label="Prix (FCFA)">
-          <Input
-            value={prix}
-            inputMode="numeric"
-            onChange={(e) => setPrix(e.target.value.replace(/\D/g, ""))}
-            placeholder="1500"
-          />
-        </Field>
-        {type === "plat" && (
-          <Field label="Ingrédients">
-            <textarea
-              value={ingredients}
-              onChange={(e) => setIngredients(e.target.value)}
-              rows={3}
-              placeholder="Riz, viande, huile, oignons…"
-              className="w-full rounded-lg border border-input bg-card px-3 py-2 text-[15px] text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    <Feuille
+      titre={type === "plat" ? "Ajouter un plat" : "Ajouter une boisson"}
+      onClose={onClose}
+      pied={
+        <>
+          {erreur && (
+            <p role="alert" className="mb-3 rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              {erreur}
+            </p>
+          )}
+          <Button type="submit" form={idFormulaire} className="w-full" loading={m.isPending}>
+            {m.isPending ? "Enregistrement…" : "Ajouter au menu"}
+          </Button>
+        </>
+      }
+    >
+      <fieldset disabled={m.isPending} className="border-0 p-0 m-0">
+        <form
+          id={idFormulaire}
+          className="space-y-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setErreur("");
+            m.mutate();
+          }}
+        >
+          <MediaPicker value={photo} onChange={setPhoto} label="Photo" hint="Obligatoire." />
+          <Field label="Nom">
+            <Input value={nom} onChange={(e) => setNom(e.target.value)} placeholder="Riz au gras" />
+          </Field>
+          <Field label="Prix (FCFA)">
+            <Input
+              value={prix}
+              inputMode="numeric"
+              onChange={(e) => setPrix(e.target.value.replace(/\D/g, ""))}
+              placeholder="1500"
             />
           </Field>
-        )}
-        {erreur && (
-          <p role="alert" className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-            {erreur}
-          </p>
-        )}
-        <Button type="submit" className="w-full" disabled={m.isPending}>
-          {m.isPending ? "Enregistrement…" : "Ajouter au menu"}
-        </Button>
-      </form>
+          {type === "plat" && (
+            <Field label="Ingrédients">
+              <textarea
+                value={ingredients}
+                onChange={(e) => setIngredients(e.target.value)}
+                rows={3}
+                placeholder="Riz, viande, huile, oignons…"
+                className="w-full rounded-lg border border-input bg-card px-3 py-2 text-[15px] text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+            </Field>
+          )}
+        </form>
+      </fieldset>
     </Feuille>
   );
 }
@@ -438,7 +462,56 @@ function FicheArticle({
   const photoActuelle = photoRetiree ? null : article.photo_url;
 
   return (
-    <Feuille titre={article.nom} onClose={onClose}>
+    <Feuille
+      titre={article.nom}
+      onClose={onClose}
+      pied={
+        <div className="space-y-2">
+          {erreur && (
+            <p role="alert" className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              {erreur}
+            </p>
+          )}
+          <Button
+            className="w-full"
+            disabled={!modifie}
+            loading={enregistrer.isPending}
+            onClick={() => {
+              setErreur("");
+              enregistrer.mutate();
+            }}
+          >
+            {enregistrer.isPending ? "Enregistrement…" : "Enregistrer les modifications"}
+          </Button>
+
+          {article.actif &&
+            (confirmRetrait ? (
+              <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-3">
+                <p className="text-sm text-destructive">
+                  Retirer « {article.nom} » du menu ? Il ne sera plus visible par les clients.
+                </p>
+                <div className="mt-2 flex gap-2">
+                  <Button
+                    size="sm"
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    disabled={retirer.isPending}
+                    onClick={() => retirer.mutate()}
+                  >
+                    {retirer.isPending ? "…" : "Confirmer le retrait"}
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => setConfirmRetrait(false)}>
+                    Annuler
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <Button variant="ghost" className="w-full text-destructive" onClick={() => setConfirmRetrait(true)}>
+                Retirer du menu
+              </Button>
+            ))}
+        </div>
+      }
+    >
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-2">
           <Stat
@@ -488,49 +561,6 @@ function FicheArticle({
             />
           </Field>
         )}
-
-        {erreur && (
-          <p role="alert" className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-            {erreur}
-          </p>
-        )}
-
-        <Button
-          className="w-full"
-          disabled={!modifie || enregistrer.isPending}
-          onClick={() => {
-            setErreur("");
-            enregistrer.mutate();
-          }}
-        >
-          {enregistrer.isPending ? "Enregistrement…" : "Enregistrer les modifications"}
-        </Button>
-
-        {article.actif &&
-          (confirmRetrait ? (
-            <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-3">
-              <p className="text-sm text-destructive">
-                Retirer « {article.nom} » du menu ? Il ne sera plus visible par les clients.
-              </p>
-              <div className="mt-2 flex gap-2">
-                <Button
-                  size="sm"
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  disabled={retirer.isPending}
-                  onClick={() => retirer.mutate()}
-                >
-                  {retirer.isPending ? "…" : "Confirmer le retrait"}
-                </Button>
-                <Button size="sm" variant="ghost" onClick={() => setConfirmRetrait(false)}>
-                  Annuler
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <Button variant="ghost" className="w-full text-destructive" onClick={() => setConfirmRetrait(true)}>
-              Retirer du menu
-            </Button>
-          ))}
       </div>
     </Feuille>
   );
