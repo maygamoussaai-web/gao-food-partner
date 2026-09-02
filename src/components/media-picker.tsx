@@ -32,7 +32,37 @@ export function MediaPicker({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [traitement, setTraitement] = useState(false);
+  const [erreur, setErreur] = useState<string | null>(null);
   const estVideo = value?.type.startsWith("video/");
+
+  async function choisir(file: File | null) {
+    setErreur(null);
+    if (!file) {
+      onChange(null);
+      return;
+    }
+    if (file.size > TAILLE_MAX_OCTETS) {
+      setErreur(
+        `Fichier trop lourd (${formatTaille(file.size)}). Maximum autorisé : ${TAILLE_MAX_LABEL}.`,
+      );
+      onChange(null);
+      return;
+    }
+    if (!estImage(file)) {
+      onChange(file);
+      return;
+    }
+    setTraitement(true);
+    try {
+      onChange(await compresserImage(file));
+    } catch (e) {
+      setErreur(e instanceof Error ? e.message : "Image illisible.");
+      onChange(null);
+    } finally {
+      setTraitement(false);
+    }
+  }
 
   useEffect(() => {
     if (!value) {
