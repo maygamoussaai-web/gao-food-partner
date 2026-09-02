@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 
 import { AppShell, Chargement, ErreurBloc, EtatVide } from "@/components/app-shell";
 import { Clock } from "@/components/clock";
+import { PhotoRonde } from "@/components/photo-zoom";
 import { PromotionDialog } from "@/components/promotion-dialog";
 import { Button, ButtonLink, Card, SectionTitre } from "@/components/ui-kit";
 import { useAuth } from "@/hooks/use-auth";
