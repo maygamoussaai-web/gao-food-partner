@@ -1,5 +1,13 @@
-import { ImagePlus, Trash2 } from "lucide-react";
+import { ImagePlus, Loader2, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+
+import {
+  compresserImage,
+  estImage,
+  formatTaille,
+  TAILLE_MAX_LABEL,
+  TAILLE_MAX_OCTETS,
+} from "@/lib/image";
 
 /**
  * Sélecteur de photo (ou photo+vidéo) avec aperçu immédiat.
