@@ -110,7 +110,7 @@ function RaccourciCarte({
   return (
     <ButtonLink
       to={to}
-      hash={hash}
+      {...(hash ? { hash } : {})}
       variant="outline"
       className="h-auto flex-col items-start gap-3 p-4 text-left"
     >
@@ -271,7 +271,7 @@ function TableauDeBord() {
             year: "numeric",
           })}
           suspendu={data?.restaurant?.statut === "suspendu"}
-          motif={data?.restaurant?.motif_suspension}
+          motif={data?.restaurant?.motif_suspension ?? null}
         />
 
         {home.isLoading && <Chargement lignes={3} />}
