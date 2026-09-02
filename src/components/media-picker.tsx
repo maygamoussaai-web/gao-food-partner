@@ -83,10 +83,22 @@ export function MediaPicker({
         type="file"
         accept={accept}
         className="hidden"
-        onChange={(e) => onChange(e.target.files?.[0] ?? null)}
+        onChange={(e) => {
+          void choisir(e.target.files?.[0] ?? null);
+          e.target.value = "";
+        }}
       />
 
-      {previewUrl ? (
+      {traitement ? (
+        <div
+          className={`flex items-center justify-center gap-2 border border-dashed border-input bg-card text-xs text-muted-foreground ${
+            rond ? "h-24 w-24 rounded-full" : "aspect-video w-full rounded-lg"
+          }`}
+        >
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Optimisation…
+        </div>
+      ) : previewUrl ? (
         <div
           className={`relative overflow-hidden border border-border bg-muted ${
             rond ? "h-24 w-24 rounded-full" : "aspect-video w-full rounded-lg"
