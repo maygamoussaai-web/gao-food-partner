@@ -191,25 +191,21 @@ function PageMenu() {
   );
 }
 
+/** Vignette ronde compacte : un clic ouvre la photo en grand. */
 function Vignette({ article, type }: { article: ArticleMenu; type: TypeArticle }) {
-  if (article.photo_url) {
-    return (
-      <img
-        src={article.photo_url}
-        alt={article.nom}
-        loading="lazy"
-        className="h-14 w-14 shrink-0 rounded-lg object-cover"
-      />
-    );
-  }
   return (
-    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-muted">
-      {type === "plat" ? (
-        <UtensilsCrossed className="h-5 w-5 text-muted-foreground" />
-      ) : (
-        <CupSoda className="h-5 w-5 text-muted-foreground" />
-      )}
-    </div>
+    <PhotoRonde
+      src={article.photo_url}
+      alt={article.nom}
+      taille="h-11 w-11"
+      fallback={
+        type === "plat" ? (
+          <UtensilsCrossed className="h-4 w-4" />
+        ) : (
+          <CupSoda className="h-4 w-4" />
+        )
+      }
+    />
   );
 }
 
