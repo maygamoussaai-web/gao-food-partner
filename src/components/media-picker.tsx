@@ -1,5 +1,13 @@
-import { ImagePlus, Trash2 } from "lucide-react";
+import { ImagePlus, Loader2, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+
+import {
+  compresserImage,
+  estImage,
+  formatTaille,
+  TAILLE_MAX_LABEL,
+  TAILLE_MAX_OCTETS,
+} from "@/lib/image";
 
 /**
  * Sélecteur de photo (ou photo+vidéo) avec aperçu immédiat.
@@ -24,7 +32,37 @@ export function MediaPicker({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [traitement, setTraitement] = useState(false);
+  const [erreur, setErreur] = useState<string | null>(null);
   const estVideo = value?.type.startsWith("video/");
+
+  async function choisir(file: File | null) {
+    setErreur(null);
+    if (!file) {
+      onChange(null);
+      return;
+    }
+    if (file.size > TAILLE_MAX_OCTETS) {
+      setErreur(
+        `Fichier trop lourd (${formatTaille(file.size)}). Maximum autorisé : ${TAILLE_MAX_LABEL}.`,
+      );
+      onChange(null);
+      return;
+    }
+    if (!estImage(file)) {
+      onChange(file);
+      return;
+    }
+    setTraitement(true);
+    try {
+      onChange(await compresserImage(file));
+    } catch (e) {
+      setErreur(e instanceof Error ? e.message : "Image illisible.");
+      onChange(null);
+    } finally {
+      setTraitement(false);
+    }
+  }
 
   useEffect(() => {
     if (!value) {
@@ -45,10 +83,22 @@ export function MediaPicker({
         type="file"
         accept={accept}
         className="hidden"
-        onChange={(e) => onChange(e.target.files?.[0] ?? null)}
+        onChange={(e) => {
+          void choisir(e.target.files?.[0] ?? null);
+          e.target.value = "";
+        }}
       />
 
-      {previewUrl ? (
+      {traitement ? (
+        <div
+          className={`flex items-center justify-center gap-2 border border-dashed border-input bg-card text-xs text-muted-foreground ${
+            rond ? "h-24 w-24 rounded-full" : "aspect-video w-full rounded-lg"
+          }`}
+        >
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Optimisation…
+        </div>
+      ) : previewUrl ? (
         <div
           className={`relative overflow-hidden border border-border bg-muted ${
             rond ? "h-24 w-24 rounded-full" : "aspect-video w-full rounded-lg"
@@ -89,6 +139,18 @@ export function MediaPicker({
           <span className="text-xs">Caméra ou galerie</span>
         </button>
       )}
+
+      {erreur ? (
+        <span role="alert" className="block text-xs font-medium text-destructive">
+          {erreur}
+        </span>
+      ) : null}
+
+      {value && estImage(value) ? (
+        <span className="block text-xs text-muted-foreground">
+          Optimisée · {formatTaille(value.size)}
+        </span>
+      ) : null}
 
       {hint ? <span className="block text-xs text-muted-foreground">{hint}</span> : null}
     </div>

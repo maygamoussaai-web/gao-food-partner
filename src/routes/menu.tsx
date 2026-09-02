@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { AppShell, Chargement, ErreurBloc, EtatVide } from "@/components/app-shell";
 import { Field, Input } from "@/components/form-field";
 import { MediaPicker } from "@/components/media-picker";
+import { PhotoRonde } from "@/components/photo-zoom";
 import { Button } from "@/components/ui-kit";
 import { readToken } from "@/lib/auth-api";
 import { fileToBase64, formatPrix } from "@/lib/home-api";
@@ -191,25 +192,21 @@ function PageMenu() {
   );
 }
 
+/** Vignette ronde compacte : un clic ouvre la photo en grand. */
 function Vignette({ article, type }: { article: ArticleMenu; type: TypeArticle }) {
-  if (article.photo_url) {
-    return (
-      <img
-        src={article.photo_url}
-        alt={article.nom}
-        loading="lazy"
-        className="h-14 w-14 shrink-0 rounded-lg object-cover"
-      />
-    );
-  }
   return (
-    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-muted">
-      {type === "plat" ? (
-        <UtensilsCrossed className="h-5 w-5 text-muted-foreground" />
-      ) : (
-        <CupSoda className="h-5 w-5 text-muted-foreground" />
-      )}
-    </div>
+    <PhotoRonde
+      src={article.photo_url}
+      alt={article.nom}
+      taille="h-11 w-11"
+      fallback={
+        type === "plat" ? (
+          <UtensilsCrossed className="h-4 w-4" />
+        ) : (
+          <CupSoda className="h-4 w-4" />
+        )
+      }
+    />
   );
 }
 
@@ -526,13 +523,16 @@ function FicheArticle({
         ) : (
           <div className="space-y-1.5">
             <span className="text-sm font-medium text-foreground">Photo</span>
-            <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border">
-              <img src={photoActuelle} alt={article.nom} className="h-full w-full object-cover" />
-              <div className="absolute inset-x-0 bottom-0 flex justify-end gap-1.5 bg-gradient-to-t from-black/50 to-transparent p-2">
+            <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-3">
+              <PhotoRonde src={photoActuelle} alt={article.nom} taille="h-16 w-16" />
+              <div className="min-w-0 flex-1">
+                <p className="text-xs text-muted-foreground">
+                  Touchez la photo pour l'afficher en grand.
+                </p>
                 <button
                   type="button"
                   onClick={() => setPhotoRetiree(true)}
-                  className="rounded-full bg-background/90 px-2.5 py-1 text-xs font-medium text-foreground"
+                  className="press mt-1 rounded-full border border-border px-2.5 py-1 text-xs font-medium text-foreground active:scale-95"
                 >
                   Changer / retirer
                 </button>

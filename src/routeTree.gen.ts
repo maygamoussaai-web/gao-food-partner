@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BienvenueRouteImport } from './routes/bienvenue'
 import { Route as CommandesRouteImport } from './routes/commandes'
 import { Route as CompteRouteImport } from './routes/compte'
 import { Route as ConditionsRouteImport } from './routes/conditions'
@@ -25,6 +26,11 @@ import { Route as TableauDeBordRouteImport } from './routes/tableau-de-bord'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BienvenueRoute = BienvenueRouteImport.update({
+  id: '/bienvenue',
+  path: '/bienvenue',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CommandesRoute = CommandesRouteImport.update({
@@ -85,6 +91,7 @@ const TableauDeBordRoute = TableauDeBordRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bienvenue': typeof BienvenueRoute
   '/commandes': typeof CommandesRoute
   '/compte': typeof CompteRoute
   '/conditions': typeof ConditionsRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bienvenue': typeof BienvenueRoute
   '/commandes': typeof CommandesRoute
   '/compte': typeof CompteRoute
   '/conditions': typeof ConditionsRoute
@@ -114,6 +122,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bienvenue': typeof BienvenueRoute
   '/commandes': typeof CommandesRoute
   '/compte': typeof CompteRoute
   '/conditions': typeof ConditionsRoute
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/bienvenue'
     | '/commandes'
     | '/compte'
     | '/conditions'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/bienvenue'
     | '/commandes'
     | '/compte'
     | '/conditions'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/bienvenue'
     | '/commandes'
     | '/compte'
     | '/conditions'
@@ -173,6 +185,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BienvenueRoute: typeof BienvenueRoute
   CommandesRoute: typeof CommandesRoute
   CompteRoute: typeof CompteRoute
   ConditionsRoute: typeof ConditionsRoute
@@ -193,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bienvenue': {
+      id: '/bienvenue'
+      path: '/bienvenue'
+      fullPath: '/bienvenue'
+      preLoaderRoute: typeof BienvenueRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/commandes': {
@@ -277,6 +297,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BienvenueRoute: BienvenueRoute,
   CommandesRoute: CommandesRoute,
   CompteRoute: CompteRoute,
   ConditionsRoute: ConditionsRoute,
