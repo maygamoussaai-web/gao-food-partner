@@ -178,21 +178,15 @@ function GrilleArticles({ articles }: { articles: ArticlePopulaire[] }) {
           className="stagger card-surface overflow-hidden"
           style={{ ["--i" as string]: i }}
         >
-          <div className="aspect-square w-full bg-muted">
-            {article.photo_url ? (
-              <img
-                src={article.photo_url}
-                alt={article.nom}
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-                <UtensilsCrossed className="h-6 w-6" />
-              </div>
-            )}
+          <div className="flex justify-center pt-3">
+            <PhotoRonde
+              src={article.photo_url}
+              alt={article.nom}
+              taille="h-16 w-16"
+              fallback={<UtensilsCrossed className="h-5 w-5" />}
+            />
           </div>
-          <div className="p-2.5">
+          <div className="p-2.5 text-center">
             <p className="truncate text-[13px] font-semibold text-foreground">{article.nom}</p>
             <div className="mt-0.5 flex items-center justify-between text-xs text-muted-foreground">
               <span className="font-semibold text-foreground/80">{formatPrix(article.prix)}</span>
