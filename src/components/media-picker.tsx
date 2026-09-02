@@ -140,6 +140,18 @@ export function MediaPicker({
         </button>
       )}
 
+      {erreur ? (
+        <span role="alert" className="block text-xs font-medium text-destructive">
+          {erreur}
+        </span>
+      ) : null}
+
+      {value && estImage(value) ? (
+        <span className="block text-xs text-muted-foreground">
+          Optimisée · {formatTaille(value.size)}
+        </span>
+      ) : null}
+
       {hint ? <span className="block text-xs text-muted-foreground">{hint}</span> : null}
     </div>
   );
