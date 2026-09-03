@@ -12,7 +12,6 @@ import {
 import { useMemo, useState } from "react";
 
 import { AppShell, Chargement, ErreurBloc, EtatVide } from "@/components/app-shell";
-import { Card } from "@/components/ui-kit";
 import { CarteCommande } from "@/routes/commandes";
 import { readToken } from "@/lib/auth-api";
 import { commandesApi, type Commande } from "@/lib/commandes-api";
@@ -42,8 +41,6 @@ export const Route = createFileRoute("/historique")({
 
 type Filtre = "tout" | "payee" | "annulee";
 type Tri = "recent" | "ancien";
-
-export default function noop() {}
 
 function PageHistorique() {
   const token = typeof window === "undefined" ? null : readToken();
