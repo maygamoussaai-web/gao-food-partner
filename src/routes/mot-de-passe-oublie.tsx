@@ -137,6 +137,14 @@ function MotDePasseOublie() {
               <Button type="submit" size="lg" className="w-full" disabled={busy}>
                 {busy ? "Enregistrement…" : "Réinitialiser"}
               </Button>
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => void demander({ preventDefault: () => {} } as React.FormEvent)}
+                className="w-full text-center text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground disabled:opacity-60"
+              >
+                Renvoyer un code au {numero}
+              </button>
             </form>
           </>
         )}
