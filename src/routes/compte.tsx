@@ -1,13 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { KeyRound, LogOut, Phone, ShieldCheck, UserRound } from "lucide-react";
+import { History, KeyRound, LogOut, Phone, ShieldCheck, Store, UserRound } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/app-shell";
 import { Field, FormError, Input } from "@/components/form-field";
 import { PasswordInput } from "@/components/password-input";
-import { Button, Card, SectionTitre } from "@/components/ui-kit";
+import { Button, ButtonLink, Card, SectionTitre } from "@/components/ui-kit";
 import { useAuth } from "@/hooks/use-auth";
 import { compteApi } from "@/lib/compte-api";
 
@@ -41,6 +41,20 @@ function PageCompte() {
     <AppShell titre="Mon compte" sousTitre={restaurant?.nom ?? "Restaurateur GAO FOOD"}>
       <div className="space-y-6">
         <EnTeteProfil />
+
+        <section className="space-y-3">
+          <SectionTitre>Raccourcis</SectionTitre>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <ButtonLink to="/restaurant" variant="outline" className="h-auto justify-start p-4">
+              <Store className="h-4 w-4 text-secondary-foreground" />
+              Gérer mon restaurant
+            </ButtonLink>
+            <ButtonLink to="/historique" variant="outline" className="h-auto justify-start p-4">
+              <History className="h-4 w-4 text-secondary-foreground" />
+              Historique des commandes
+            </ButtonLink>
+          </div>
+        </section>
 
         <section className="space-y-3">
           <SectionTitre>Informations personnelles</SectionTitre>
