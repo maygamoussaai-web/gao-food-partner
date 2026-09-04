@@ -259,10 +259,10 @@ function Feuille({
 }) {
   const styleViewport = useViewportSheetStyle();
 
-  return (
+  const contenu = (
     <div
       style={styleViewport}
-      className="fixed inset-0 z-50 flex h-[100dvh] items-end justify-center overflow-hidden sm:items-center"
+      className="fixed inset-0 z-50 flex h-dvh items-end justify-center overflow-hidden sm:items-center"
     >
       <div
         className="absolute inset-0 bg-black/50 animate-in fade-in duration-200"
@@ -290,6 +290,10 @@ function Feuille({
       </div>
     </div>
   );
+
+  // Portail sur <body> : un ancêtre animé/filtré ne peut plus servir de repère
+  // au positionnement `fixed`, qui reste donc calé sur l'écran.
+  return typeof document === "undefined" ? contenu : createPortal(contenu, document.body);
 }
 
 function FormulaireArticle({
