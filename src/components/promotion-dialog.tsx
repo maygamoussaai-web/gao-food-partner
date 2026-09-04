@@ -78,15 +78,17 @@ export function PromotionDialog({
   const idFormulaire = "formulaire-nouvelle-promotion";
 
   return (
-    // h-[100dvh] (et non vh) : sur mobile, la hauteur "dvh" se réduit quand le
-    // clavier s'ouvre, contrairement à "vh" qui reste figée sur l'écran plein.
-    // C'est ce qui empêchait de voir les boutons du bas une fois le clavier ouvert.
-    <div className="fixed inset-0 z-50 flex h-[100dvh] items-end justify-center bg-foreground/40 p-0 sm:items-center sm:p-6">
+    // La feuille est ancrée sur la zone réellement visible (visualViewport) :
+    // clavier ouvert ou non, le pied avec « Publier » / « Annuler » reste visible.
+    <div
+      style={styleViewport}
+      className="fixed inset-0 z-50 flex h-[100dvh] items-end justify-center overflow-hidden bg-foreground/40 p-0 sm:items-center sm:p-6"
+    >
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Nouvelle promotion"
-        className="flex max-h-[92dvh] w-full max-w-lg flex-col overflow-hidden rounded-t-2xl border border-border bg-card sm:rounded-2xl"
+        className="flex max-h-full w-full max-w-lg flex-col overflow-hidden rounded-t-2xl border border-border bg-card sm:rounded-2xl"
       >
         <div className="flex items-center justify-between border-b border-border/60 p-5 pb-4">
           <h2 className="text-base font-semibold text-foreground">Nouvelle promotion</h2>

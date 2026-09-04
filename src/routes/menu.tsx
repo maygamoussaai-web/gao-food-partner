@@ -256,14 +256,19 @@ function Feuille({
   children: React.ReactNode;
   pied?: React.ReactNode;
 }) {
+  const styleViewport = useViewportSheetStyle();
+
   return (
-    <div className="fixed inset-0 z-50 flex h-[100dvh] items-end justify-center sm:items-center">
+    <div
+      style={styleViewport}
+      className="fixed inset-0 z-50 flex h-[100dvh] items-end justify-center overflow-hidden sm:items-center"
+    >
       <div
         className="absolute inset-0 bg-black/50 animate-in fade-in duration-200"
         onClick={onClose}
         aria-hidden
       />
-      <div className="relative z-10 flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-2xl border border-border bg-background shadow-xl animate-in slide-in-from-bottom duration-250 sm:max-w-lg sm:rounded-2xl">
+      <div className="relative z-10 flex max-h-full w-full flex-col overflow-hidden rounded-t-2xl border border-border bg-background shadow-xl animate-in slide-in-from-bottom duration-250 sm:max-w-lg sm:rounded-2xl">
         <div className="flex items-start justify-between gap-3 border-b border-border/60 p-5 pb-4">
           <h2 className="text-lg font-semibold text-foreground">{titre}</h2>
           <button
