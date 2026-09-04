@@ -13,7 +13,6 @@ import { toast } from "sonner";
 import { AppShell, Chargement, ErreurBloc, EtatVide } from "@/components/app-shell";
 import { Field, Input } from "@/components/form-field";
 import { MediaPicker } from "@/components/media-picker";
-import { PhotoRonde } from "@/components/photo-zoom";
 import { Button } from "@/components/ui-kit";
 import { readToken } from "@/lib/auth-api";
 import { fileToBase64, formatPrix } from "@/lib/home-api";
@@ -192,21 +191,25 @@ function PageMenu() {
   );
 }
 
-/** Vignette ronde compacte : un clic ouvre la photo en grand. */
 function Vignette({ article, type }: { article: ArticleMenu; type: TypeArticle }) {
+  if (article.photo_url) {
+    return (
+      <img
+        src={article.photo_url}
+        alt={article.nom}
+        loading="lazy"
+        className="h-14 w-14 shrink-0 rounded-lg object-cover"
+      />
+    );
+  }
   return (
-    <PhotoRonde
-      src={article.photo_url}
-      alt={article.nom}
-      taille="h-11 w-11"
-      fallback={
-        type === "plat" ? (
-          <UtensilsCrossed className="h-4 w-4" />
-        ) : (
-          <CupSoda className="h-4 w-4" />
-        )
-      }
-    />
+    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-muted">
+      {type === "plat" ? (
+        <UtensilsCrossed className="h-5 w-5 text-muted-foreground" />
+      ) : (
+        <CupSoda className="h-5 w-5 text-muted-foreground" />
+      )}
+    </div>
   );
 }
 
@@ -254,13 +257,13 @@ function Feuille({
   pied?: React.ReactNode;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
+    <div className="fixed inset-0 z-50 flex h-[100dvh] items-end justify-center sm:items-center">
       <div
         className="absolute inset-0 bg-black/50 animate-in fade-in duration-200"
         onClick={onClose}
         aria-hidden
       />
-      <div className="relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl border border-border bg-background shadow-xl animate-in slide-in-from-bottom duration-250 sm:max-w-lg sm:rounded-2xl">
+      <div className="relative z-10 flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-2xl border border-border bg-background shadow-xl animate-in slide-in-from-bottom duration-250 sm:max-w-lg sm:rounded-2xl">
         <div className="flex items-start justify-between gap-3 border-b border-border/60 p-5 pb-4">
           <h2 className="text-lg font-semibold text-foreground">{titre}</h2>
           <button
@@ -276,7 +279,7 @@ function Feuille({
         <div className="min-h-0 flex-1 overflow-y-auto p-5">{children}</div>
 
         {pied ? (
-          <div className="border-t border-border/60 bg-background/95 p-5 pt-4 backdrop-blur">{pied}</div>
+          <div className="border-t border-border/60 bg-background/95 p-5 pt-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))] backdrop-blur">{pied}</div>
         ) : null}
       </div>
     </div>
@@ -523,16 +526,13 @@ function FicheArticle({
         ) : (
           <div className="space-y-1.5">
             <span className="text-sm font-medium text-foreground">Photo</span>
-            <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-3">
-              <PhotoRonde src={photoActuelle} alt={article.nom} taille="h-16 w-16" />
-              <div className="min-w-0 flex-1">
-                <p className="text-xs text-muted-foreground">
-                  Touchez la photo pour l'afficher en grand.
-                </p>
+            <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border">
+              <img src={photoActuelle} alt={article.nom} className="h-full w-full object-cover" />
+              <div className="absolute inset-x-0 bottom-0 flex justify-end gap-1.5 bg-gradient-to-t from-black/50 to-transparent p-2">
                 <button
                   type="button"
                   onClick={() => setPhotoRetiree(true)}
-                  className="press mt-1 rounded-full border border-border px-2.5 py-1 text-xs font-medium text-foreground active:scale-95"
+                  className="rounded-full bg-background/90 px-2.5 py-1 text-xs font-medium text-foreground"
                 >
                   Changer / retirer
                 </button>
