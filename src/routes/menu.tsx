@@ -14,6 +14,7 @@ import { AppShell, Chargement, ErreurBloc, EtatVide } from "@/components/app-she
 import { Field, Input } from "@/components/form-field";
 import { MediaPicker } from "@/components/media-picker";
 import { Button } from "@/components/ui-kit";
+import { useViewportSheetStyle } from "@/hooks/use-viewport-sheet";
 import { readToken } from "@/lib/auth-api";
 import { fileToBase64, formatPrix } from "@/lib/home-api";
 import { menuApi, uploadMedia, type ArticleMenu, type TypeArticle } from "@/lib/menu-api";

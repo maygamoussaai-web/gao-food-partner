@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { Field, FormError, Input } from "@/components/form-field";
 import { MediaPicker } from "@/components/media-picker";
 import { Button } from "@/components/ui-kit";
+import { useViewportSheetStyle } from "@/hooks/use-viewport-sheet";
 import { fileToBase64, homeApi, type ArticlePopulaire } from "@/lib/home-api";
 
 type Cible = { type: "plat" | "boisson"; article: ArticlePopulaire };
@@ -76,6 +77,7 @@ export function PromotionDialog({
   }
 
   const idFormulaire = "formulaire-nouvelle-promotion";
+  const styleViewport = useViewportSheetStyle();
 
   return (
     // La feuille est ancrée sur la zone réellement visible (visualViewport) :
