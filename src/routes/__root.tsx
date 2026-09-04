@@ -78,7 +78,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      {
+        name: "viewport",
+        // `interactive-widget=resizes-content` : sur Android, l'ouverture du clavier
+        // réduit réellement la zone de mise en page. Sans ce réglage (défaut
+        // `resizes-visual`), les éléments `position: fixed` gardent la hauteur
+        // plein écran et leur pied (boutons d'action) reste caché sous le clavier.
+        content:
+          "width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content",
+      },
       { title: "GAO FOOD — Interface restaurateur" },
       {
         name: "description",
