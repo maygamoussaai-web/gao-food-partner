@@ -75,96 +75,108 @@ export function PromotionDialog({
     }
   }
 
+  const idFormulaire = "formulaire-nouvelle-promotion";
+
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-foreground/40 p-0 sm:items-center sm:p-6">
+    // h-[100dvh] (et non vh) : sur mobile, la hauteur "dvh" se réduit quand le
+    // clavier s'ouvre, contrairement à "vh" qui reste figée sur l'écran plein.
+    // C'est ce qui empêchait de voir les boutons du bas une fois le clavier ouvert.
+    <div className="fixed inset-0 z-50 flex h-[100dvh] items-end justify-center bg-foreground/40 p-0 sm:items-center sm:p-6">
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Nouvelle promotion"
-        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-border bg-card p-5 sm:rounded-2xl"
+        className="flex max-h-[92dvh] w-full max-w-lg flex-col overflow-hidden rounded-t-2xl border border-border bg-card sm:rounded-2xl"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between border-b border-border/60 p-5 pb-4">
           <h2 className="text-base font-semibold text-foreground">Nouvelle promotion</h2>
           <Button variant="ghost" size="sm" onClick={onClose} aria-label="Fermer">
             <X className="h-4 w-4" />
           </Button>
         </div>
 
-        <form className="mt-4 space-y-4" onSubmit={soumettre}>
-          <MediaPicker
-            label="Photo ou vidéo"
-            accept="image/*,video/*"
-            value={fichier}
-            onChange={setFichier}
-            hint="Visible sur votre vitrine, façon story."
-          />
+        {/* Corps scrollable : seul ce bloc défile, l'en-tête et le pied restent fixes. */}
+        <div className="min-h-0 flex-1 overflow-y-auto p-5">
+          <fieldset disabled={envoi} className="border-0 p-0 m-0">
+            <form id={idFormulaire} className="space-y-4" onSubmit={soumettre}>
+              <MediaPicker
+                label="Photo ou vidéo"
+                accept="image/*,video/*"
+                value={fichier}
+                onChange={setFichier}
+                hint="Visible sur votre vitrine, façon story."
+              />
 
-          <Field label="Description">
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={3}
-              placeholder="Ex. Menu du jour à petit prix…"
-              className="w-full rounded-lg border border-input bg-card px-3 py-2 text-[15px] text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            />
-          </Field>
-
-          <Field label="Lier un plat ou une boisson (optionnel)">
-            {cible ? (
-              <div className="flex items-center justify-between rounded-lg border border-border bg-muted px-3 py-2">
-                <span className="text-sm text-foreground">
-                  {cible.article.nom}
-                  <span className="ml-2 text-xs text-muted-foreground">
-                    {cible.type === "plat" ? "Plat" : "Boisson"}
-                  </span>
-                </span>
-                <Button type="button" variant="ghost" size="sm" onClick={() => setCible(null)}>
-                  Retirer
-                </Button>
-              </div>
-            ) : (
-              <>
-                <Input
-                  value={recherche}
-                  onChange={(e) => setRecherche(e.target.value)}
-                  placeholder="Rechercher dans vos articles"
+              <Field label="Description">
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={3}
+                  placeholder="Ex. Menu du jour à petit prix…"
+                  className="w-full rounded-lg border border-input bg-card px-3 py-2 text-[15px] text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 />
-                {resultats.length > 0 && (
-                  <ul className="mt-2 divide-y divide-border overflow-hidden rounded-lg border border-border">
-                    {resultats.map((r) => (
-                      <li key={`${r.type}-${r.article.id}`}>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setCible(r);
-                            setRecherche("");
-                          }}
-                          className="flex w-full items-center justify-between px-3 py-2 text-left text-sm text-foreground hover:bg-muted"
-                        >
-                          {r.article.nom}
-                          <span className="text-xs text-muted-foreground">
-                            {r.type === "plat" ? "Plat" : "Boisson"}
-                          </span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
+              </Field>
+
+              <Field label="Lier un plat ou une boisson (optionnel)">
+                {cible ? (
+                  <div className="flex items-center justify-between rounded-lg border border-border bg-muted px-3 py-2">
+                    <span className="text-sm text-foreground">
+                      {cible.article.nom}
+                      <span className="ml-2 text-xs text-muted-foreground">
+                        {cible.type === "plat" ? "Plat" : "Boisson"}
+                      </span>
+                    </span>
+                    <Button type="button" variant="ghost" size="sm" onClick={() => setCible(null)}>
+                      Retirer
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <Input
+                      value={recherche}
+                      onChange={(e) => setRecherche(e.target.value)}
+                      placeholder="Rechercher dans vos articles"
+                    />
+                    {resultats.length > 0 && (
+                      <ul className="mt-2 divide-y divide-border overflow-hidden rounded-lg border border-border">
+                        {resultats.map((r) => (
+                          <li key={`${r.type}-${r.article.id}`}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setCible(r);
+                                setRecherche("");
+                              }}
+                              className="flex w-full items-center justify-between px-3 py-2 text-left text-sm text-foreground hover:bg-muted"
+                            >
+                              {r.article.nom}
+                              <span className="text-xs text-muted-foreground">
+                                {r.type === "plat" ? "Plat" : "Boisson"}
+                              </span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </>
                 )}
-              </>
-            )}
-          </Field>
+              </Field>
+            </form>
+          </fieldset>
+        </div>
 
+        {/* Pied fixe : toujours visible, même clavier ouvert. */}
+        <div className="border-t border-border/60 bg-card/95 p-5 pt-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))] backdrop-blur">
           <FormError>{erreur}</FormError>
-
-          <div className="flex gap-2">
-            <Button type="button" variant="outline" className="flex-1" onClick={onClose}>
+          <div className="mt-2 flex gap-2">
+            <Button type="button" variant="outline" className="flex-1" onClick={onClose} disabled={envoi}>
               Annuler
             </Button>
-            <Button type="submit" className="flex-1" disabled={envoi}>
+            <Button type="submit" form={idFormulaire} className="flex-1" loading={envoi}>
               {envoi ? "Publication…" : "Publier"}
             </Button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
