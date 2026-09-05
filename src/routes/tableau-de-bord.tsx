@@ -226,27 +226,7 @@ function TableauDeBord() {
   return (
     <AppShell
       titre="Accueil"
-      actions={
-        <>
-          <ButtonLink to="/compte" variant="ghost" size="icon" aria-label="Mon compte">
-            <UserRound className="h-4 w-4" />
-          </ButtonLink>
-          <ButtonLink to="/restaurant" variant="ghost" size="icon" aria-label="Mon restaurant">
-            <Store className="h-4 w-4" />
-          </ButtonLink>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Déconnexion"
-            onClick={() => {
-              signOut();
-              void navigate({ to: "/connexion" });
-            }}
-          >
-            <LogOut className="h-4 w-4" />
-          </Button>
-        </>
-      }
+      actions={<HeaderMenu />}
     >
       <div className="space-y-6">
         <CarteBienvenue
