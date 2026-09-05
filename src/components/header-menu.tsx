@@ -1,14 +1,13 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { LogOut, MoreVertical, Store, UserRound } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { useAuth } from "@/hooks/use-auth";
+import { DeconnexionConfirm } from "@/components/logout-confirm";
 
 export function HeaderMenu() {
   const [ouvert, setOuvert] = useState(false);
+  const [confirmDeconnexion, setConfirmDeconnexion] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-  const { signOut } = useAuth();
 
   useEffect(() => {
     function onClick(event: MouseEvent) {
@@ -59,8 +58,7 @@ export function HeaderMenu() {
               type="button"
               onClick={() => {
                 setOuvert(false);
-                signOut();
-                void navigate({ to: "/connexion" });
+                setConfirmDeconnexion(true);
               }}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-destructive transition-colors hover:bg-destructive/10"
             >
@@ -70,6 +68,8 @@ export function HeaderMenu() {
           </div>
         </div>
       )}
+
+      <DeconnexionConfirm ouvert={confirmDeconnexion} onFermer={() => setConfirmDeconnexion(false)} />
     </div>
   );
 }

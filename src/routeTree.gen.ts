@@ -15,6 +15,7 @@ import { Route as CommandesRouteImport } from './routes/commandes'
 import { Route as CompteRouteImport } from './routes/compte'
 import { Route as ConditionsRouteImport } from './routes/conditions'
 import { Route as ConnexionRouteImport } from './routes/connexion'
+import { Route as EnAttenteRouteImport } from './routes/en-attente'
 import { Route as HistoriqueRouteImport } from './routes/historique'
 import { Route as InscriptionRouteImport } from './routes/inscription'
 import { Route as InscriptionCompteRouteImport } from './routes/inscription-compte'
@@ -51,6 +52,11 @@ const ConditionsRoute = ConditionsRouteImport.update({
 const ConnexionRoute = ConnexionRouteImport.update({
   id: '/connexion',
   path: '/connexion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnAttenteRoute = EnAttenteRouteImport.update({
+  id: '/en-attente',
+  path: '/en-attente',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoriqueRoute = HistoriqueRouteImport.update({
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/compte': typeof CompteRoute
   '/conditions': typeof ConditionsRoute
   '/connexion': typeof ConnexionRoute
+  '/en-attente': typeof EnAttenteRoute
   '/historique': typeof HistoriqueRoute
   '/inscription': typeof InscriptionRoute
   '/inscription-compte': typeof InscriptionCompteRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByTo {
   '/compte': typeof CompteRoute
   '/conditions': typeof ConditionsRoute
   '/connexion': typeof ConnexionRoute
+  '/en-attente': typeof EnAttenteRoute
   '/historique': typeof HistoriqueRoute
   '/inscription': typeof InscriptionRoute
   '/inscription-compte': typeof InscriptionCompteRoute
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/compte': typeof CompteRoute
   '/conditions': typeof ConditionsRoute
   '/connexion': typeof ConnexionRoute
+  '/en-attente': typeof EnAttenteRoute
   '/historique': typeof HistoriqueRoute
   '/inscription': typeof InscriptionRoute
   '/inscription-compte': typeof InscriptionCompteRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/compte'
     | '/conditions'
     | '/connexion'
+    | '/en-attente'
     | '/historique'
     | '/inscription'
     | '/inscription-compte'
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/compte'
     | '/conditions'
     | '/connexion'
+    | '/en-attente'
     | '/historique'
     | '/inscription'
     | '/inscription-compte'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/compte'
     | '/conditions'
     | '/connexion'
+    | '/en-attente'
     | '/historique'
     | '/inscription'
     | '/inscription-compte'
@@ -190,6 +202,7 @@ export interface RootRouteChildren {
   CompteRoute: typeof CompteRoute
   ConditionsRoute: typeof ConditionsRoute
   ConnexionRoute: typeof ConnexionRoute
+  EnAttenteRoute: typeof EnAttenteRoute
   HistoriqueRoute: typeof HistoriqueRoute
   InscriptionRoute: typeof InscriptionRoute
   InscriptionCompteRoute: typeof InscriptionCompteRoute
@@ -241,6 +254,13 @@ declare module '@tanstack/react-router' {
       path: '/connexion'
       fullPath: '/connexion'
       preLoaderRoute: typeof ConnexionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en-attente': {
+      id: '/en-attente'
+      path: '/en-attente'
+      fullPath: '/en-attente'
+      preLoaderRoute: typeof EnAttenteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/historique': {
@@ -302,6 +322,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompteRoute: CompteRoute,
   ConditionsRoute: ConditionsRoute,
   ConnexionRoute: ConnexionRoute,
+  EnAttenteRoute: EnAttenteRoute,
   HistoriqueRoute: HistoriqueRoute,
   InscriptionRoute: InscriptionRoute,
   InscriptionCompteRoute: InscriptionCompteRoute,

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/app-shell";
+import { DeconnexionConfirm } from "@/components/logout-confirm";
 import { Field, FormError, Input } from "@/components/form-field";
 import { PasswordInput } from "@/components/password-input";
 import { Button, ButtonLink, Card, SectionTitre } from "@/components/ui-kit";
@@ -34,8 +35,8 @@ export const Route = createFileRoute("/compte")({
 });
 
 function PageCompte() {
-  const { token, restaurateur, restaurant, signOut } = useAuth();
-  const navigate = useNavigate();
+  const { token, restaurateur, restaurant } = useAuth();
+  const [confirmDeconnexion, setConfirmDeconnexion] = useState(false);
 
   return (
     <AppShell titre="Mon compte" sousTitre={restaurant?.nom ?? "Restaurateur GAO FOOD"}>
@@ -79,11 +80,7 @@ function PageCompte() {
             <Button
               variant="danger"
               className="mt-3 w-full"
-              onClick={() => {
-                signOut();
-                toast.success("Vous êtes déconnecté.");
-                void navigate({ to: "/connexion", replace: true });
-              }}
+              onClick={() => setConfirmDeconnexion(true)}
             >
               <LogOut className="h-4 w-4" />
               Se déconnecter
@@ -91,6 +88,11 @@ function PageCompte() {
           </Card>
         </section>
       </div>
+
+      <DeconnexionConfirm
+        ouvert={confirmDeconnexion}
+        onFermer={() => setConfirmDeconnexion(false)}
+      />
     </AppShell>
   );
 }
