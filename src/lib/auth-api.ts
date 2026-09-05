@@ -14,6 +14,7 @@ export type Restaurant = {
   logo_url: string | null;
   statut: string;
   motif_suspension?: string | null;
+  motif_refus?: string | null;
 };
 
 export type AuthPayload = {
