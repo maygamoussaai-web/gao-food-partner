@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { X } from "lucide-react";
 
@@ -79,12 +80,12 @@ export function PromotionDialog({
   const idFormulaire = "formulaire-nouvelle-promotion";
   const styleViewport = useViewportSheetStyle();
 
-  return (
+  const contenu = (
     // La feuille est ancrée sur la zone réellement visible (visualViewport) :
     // clavier ouvert ou non, le pied avec « Publier » / « Annuler » reste visible.
     <div
       style={styleViewport}
-      className="fixed inset-0 z-50 flex h-[100dvh] items-end justify-center overflow-hidden bg-foreground/40 p-0 sm:items-center sm:p-6"
+      className="fixed inset-0 z-50 flex h-dvh items-end justify-center overflow-hidden bg-foreground/40 p-0 sm:items-center sm:p-6"
     >
       <div
         role="dialog"
@@ -184,4 +185,7 @@ export function PromotionDialog({
       </div>
     </div>
   );
+
+  // Portail sur <body> : le positionnement `fixed` reste calé sur l'écran.
+  return typeof document === "undefined" ? contenu : createPortal(contenu, document.body);
 }
