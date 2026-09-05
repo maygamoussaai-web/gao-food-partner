@@ -1,19 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import {
-  ChevronRight,
-  ClipboardList,
-  LogOut,
-  Megaphone,
-  Star,
-  Store,
-  UserRound,
-  UtensilsCrossed,
-} from "lucide-react";
+import { ChevronRight, ClipboardList, Megaphone, Star, UtensilsCrossed } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { AppShell, Chargement, ErreurBloc, EtatVide } from "@/components/app-shell";
 import { Clock } from "@/components/clock";
+import { HeaderMenu } from "@/components/header-menu";
 import { PhotoRonde } from "@/components/photo-zoom";
 import { PromotionDialog } from "@/components/promotion-dialog";
 import { Button, ButtonLink, Card, SectionTitre } from "@/components/ui-kit";
