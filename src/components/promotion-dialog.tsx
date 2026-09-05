@@ -184,4 +184,7 @@ export function PromotionDialog({
       </div>
     </div>
   );
+
+  // Portail sur <body> : le positionnement `fixed` reste calé sur l'écran.
+  return typeof document === "undefined" ? contenu : createPortal(contenu, document.body);
 }
