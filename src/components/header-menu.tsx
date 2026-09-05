@@ -16,10 +16,9 @@ export function HeaderMenu() {
         setOuvert(false);
       }
     }
-    if (ouvert) {
-      document.addEventListener("mousedown", onClick);
-      return () => document.removeEventListener("mousedown", onClick);
-    }
+    if (!ouvert) return;
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
   }, [ouvert]);
 
   const items = [
