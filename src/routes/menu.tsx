@@ -8,6 +8,7 @@ import {
   X,
 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { toast } from "sonner";
 
 import { AppShell, Chargement, ErreurBloc, EtatVide } from "@/components/app-shell";
